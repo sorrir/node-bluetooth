@@ -1,0 +1,20 @@
+{
+    "plugins": [
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "decoratorsBeforeExport": true,
+                "legacy": false
+            }
+        ],
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "regenerator": true
+            }
+        ],
+        "@babel/plugin-transform-typescript",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-syntax-bigint"
+    ]
+}
