@@ -1,7 +1,7 @@
 {
-  "name": "docker-bt-test",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@sorrir/bluetooth",
+  "version": "0.1.0",
+  "description": "A BLE central library built uppon bluez, the official Linux Bluetooth protocol stack.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,12 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.10.3",
-    "@babel/runtime": "^7.10.3",
-    "dbus-next": "^0.8.2",
-    "lodash": "^4.17.15",
-    "node-ble": "^1.2.0",
-    "yargs": "^15.3.1"
+    "dbus-next": "^0.8.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.44",
@@ -41,6 +36,7 @@
     "babel-jest": "^26.0.1",
     "babel-plugin-syntax-async-functions": "^7.0.0-0",
     "babel-plugin-transform-decorators": "^7.0.0-0",
+    "@babel/plugin-transform-runtime": "^7.10.3",
     "commander": "^5.1.0",
     "handlebars": "^4.7.6",
     "jest": "^26.0.1",
