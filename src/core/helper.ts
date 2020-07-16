@@ -1,3 +1,5 @@
+import { EventEmitter } from "events";
+
 export async function sleep(ms): Promise<unknown> {
     return new Promise((resolve) => {
         setTimeout(resolve, ms);

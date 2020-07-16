@@ -3,6 +3,7 @@ import { Adapter } from '../core/client-interfaces/adapter'
 import { Exception } from 'handlebars'
 import { GattCharacteristic } from '../core/client-interfaces/gatt-characteristic'
 import { Bluez } from '../core/bluez'
+import { Device } from '../core'
 
 export class UartBluetoothClient {
     target: string
@@ -11,7 +12,7 @@ export class UartBluetoothClient {
     address: String
     private _txCharacteristic: GattCharacteristic
     private _rxCharacteristic: GattCharacteristic
-    private _targetDevice: any
+    private _targetDevice: Device
 
 	constructor(target: string) {
 		this.target = target
