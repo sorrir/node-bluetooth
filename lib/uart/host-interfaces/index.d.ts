@@ -3,4 +3,4 @@ export * from './uart-application';
 export * from './uart-rx-characteristic';
 export * from './uart-service';
 export * from './uart-tx-characteristic';
-//# sourceMappingURL=_index.d.ts.map
+//# sourceMappingURL=index.d.ts.map

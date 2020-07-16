@@ -13,7 +13,6 @@ for(let arg of process.argv.slice(2)) {
         console.error(`invalid argument '${arg}'`)
     }
 }
-console.log(argv)
 
 async function main() {
     if (argv.server) {

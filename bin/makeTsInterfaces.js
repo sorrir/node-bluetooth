@@ -1,6 +1,15 @@
 const fs = require('fs');
-const argv = require('yargs').argv
 const { DBusSignatures } = require('../lib/sorrir-bluez/types')
+
+let argv = {}
+for(let arg of process.argv.slice(2)) {
+    if(arg.startsWith("--")) {
+        let keyVal = arg.substring(2).split("=")
+        argv[keyVal[0]] = keyVal.length > 1 ? keyVal[1] : true
+    } else {
+        console.error(`invalid argument '${arg}'`)
+    }
+}
 
 // consts
 

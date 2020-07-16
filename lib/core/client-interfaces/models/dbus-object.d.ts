@@ -13,6 +13,6 @@ export declare class DBusObject {
     call(methodName: string, ...args: any[]): Promise<any>;
     get(parameterName: string): Promise<any>;
     set(parameterName: string, value: dBusType, signature?: any): Promise<any>;
-    static _getSignature(value: dBusType): "b" | "s" | "n";
+    static _getSignature(value: dBusType): "b" | "n" | "s";
 }
 //# sourceMappingURL=dbus-object.d.ts.map

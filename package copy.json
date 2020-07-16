@@ -1,0 +1,46 @@
+{
+  "name": "@sorrir/bluetooth",
+  "version": "0.1.0",
+  "description": "A BLE central library built uppon bluez, the official Linux Bluetooth protocol stack.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-test": "node build/test.js",
+    "build": "babel src -d lib --extensions \".ts,.js\"",
+    "build-types": "tsc --declaration --outDir lib/ --emitDeclarationOnly --declarationMap --allowJs false --checkJs false",
+    "build-tsc": "tsc --outDir test/",
+    "build-watch": "babel src -d lib --extensions \".ts,.js\" --watch",
+    "clear:babel-cache": "rimraf -rf ./node_modules/.cache/babel-loader/*"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dbus-next": "^0.8.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.44",
+    "@babel/core": "^7.10.3",
+    "@babel/node": "^7.10.3",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-proposal-decorators": "^7.10.3",
+    "@babel/plugin-syntax-bigint": "^7.8.3",
+    "@babel/plugin-transform-async-to-generator": "^7.10.1",
+    "@babel/plugin-transform-typescript": "^7.10.4",
+    "@babel/preset-env": "^7.10.3",
+    "babel-core": "^7.0.0-beta.41",
+    "babel-jest": "^26.0.1",
+    "babel-plugin-syntax-async-functions": "^7.0.0-0",
+    "babel-plugin-transform-decorators": "^7.0.0-0",
+    "@babel/plugin-transform-runtime": "^7.10.3",
+    "commander": "^5.1.0",
+    "handlebars": "^4.7.6",
+    "jest": "^26.0.1",
+    "jsdoc": "^3.6.4"
+  }
+}
