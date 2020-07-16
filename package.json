@@ -2,14 +2,16 @@
   "name": "@sorrir/bluetooth",
   "version": "0.1.0",
   "description": "A BLE central library built uppon bluez, the official Linux Bluetooth protocol stack.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/types.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-test": "node build/test.js",
     "build-babel": "babel src -d lib --extensions \".ts,.js\"",
     "build-types": "tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false",
     "build": "babel src -d lib --extensions \".ts,.js\" && tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false",
-    "build-watch": "babel src -d lib --extensions \".ts,.js\" --watch & tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false -w && kill $!"
+    "build-watch": "babel src -d lib --extensions \".ts,.js\" --watch & tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false -w && kill $!",
+    "dts-gen": "dts-bundle --name @sorrir/bluetooth --main lib/index.js --out types.d.ts"
   },
   "babel": {
     "presets": [
@@ -49,6 +51,7 @@
     "@babel/plugin-transform-typescript": "^7.10.4",
     "@babel/preset-env": "^7.10.3",
     "@types/node": "^14.0.23",
+    "dts-bundle": "^0.7.3",
     "handlebars": "^4.7.6"
   }
 }
