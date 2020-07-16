@@ -5,6 +5,10 @@ import { Property, ReadOnlyProperty } from "./models/property";
 import { path, dict, Variant } from "../types";
 import { RetryOptions } from "../helper";
 import { Device } from "./device";
+import { LEAdvertisingManager } from "./le-advertising-manager";
+import { GattManager } from "./gatt-manager";
+import { Media } from "./media";
+import { NetworkServer } from "./network-server";
 export declare class Adapter extends BaseInterface<Adapter1> {
     /**
     * Hide constructor, initialization shall be done asynchronously with connect
@@ -48,6 +52,10 @@ export declare class Adapter extends BaseInterface<Adapter1> {
     getDevice(filter?: object, options?: RetryOptions): Promise<Device>;
     clearDevices(): Promise<void>;
     removeDeviceByPath(path: string): Promise<any>;
+    getAdvertisingManager(): Promise<LEAdvertisingManager>;
+    getGattManager(): Promise<GattManager>;
+    getMedia(): Promise<Media>;
+    getNetworkServer(): Promise<NetworkServer>;
     /**
     * Direct mappings to introspected properties, methods and signals of internal Adapter1
     */

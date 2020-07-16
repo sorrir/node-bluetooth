@@ -1,6 +1,6 @@
 export declare class UartBluetoothClient {
     target: string;
-    handleMessage: (message: string, sender: string) => Promise<void>;
+    handleMessage: (message: string, sender: string) => Promise<void> | void;
     isStarted: boolean;
     address: String;
     private _txCharacteristic;
@@ -8,7 +8,7 @@ export declare class UartBluetoothClient {
     private _targetDevice;
     constructor(target: string);
     connect(): Promise<void>;
-    sendMessage(message: any): Promise<void>;
+    sendMessage(message: string): Promise<void>;
     disconnect(): Promise<void>;
 }
 //# sourceMappingURL=uart-bluetooth-client.d.ts.map
