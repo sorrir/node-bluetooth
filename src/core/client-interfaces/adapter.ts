@@ -6,6 +6,10 @@ import { Property, ReadOnlyProperty } from "./models/property"
 import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant } from "../types"
 import { RetryOptions } from "../helper"
 import { Device } from "./device"
+import { LEAdvertisingManager } from "./le-advertising-manager"
+import { GattManager } from "./gatt-manager"
+import { Media } from "./media"
+import { NetworkServer } from "./network-server"
 
 export class Adapter extends BaseInterface<Adapter1> {
 	/**
@@ -79,6 +83,14 @@ export class Adapter extends BaseInterface<Adapter1> {
 	}
 
 	async removeDeviceByPath(path: string) { return this._internal.RemoveDevice(path) }
+
+	async getAdvertisingManager() { return LEAdvertisingManager.connect(this._bluez, this.path) }
+
+	async getGattManager() { return GattManager.connect(this._bluez, this.path) }
+
+	async getMedia() { return Media.connect(this._bluez, this.path) }
+
+	async getNetworkServer() { return NetworkServer.connect(this._bluez, this.path) }
 
     /**
     * Direct mappings to introspected properties, methods and signals of internal Adapter1

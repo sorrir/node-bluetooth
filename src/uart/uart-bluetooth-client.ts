@@ -6,7 +6,7 @@ import { Bluez } from '../core/bluez'
 
 export class UartBluetoothClient {
     target: string
-    handleMessage: (message: string, sender: string) => Promise<void>
+    handleMessage: (message: string, sender: string) => Promise<void> | void
     isStarted: boolean
     address: String
     private _txCharacteristic: GattCharacteristic
@@ -15,7 +15,7 @@ export class UartBluetoothClient {
 
 	constructor(target: string) {
 		this.target = target
-		this.handleMessage = async (message, sender) => { }
+		this.handleMessage = async (message: string, sender: string) => { }
 		this.isStarted = false
 	}
 
@@ -23,7 +23,6 @@ export class UartBluetoothClient {
 		let bluez = await new Bluez().init()
 		let adapter = await Adapter.connect(bluez)
 		this.address = await adapter.Address.get()
-		// start discovery
 		await adapter.Powered.set(true)
 
 		await adapter.startDiscovery()
@@ -54,7 +53,7 @@ export class UartBluetoothClient {
 		})
 	}
 
-	async sendMessage(message) {
+	async sendMessage(message: string) {
 		if (!this.isStarted) {
 			throw new Exception('Client is not yet connected')
 		}
