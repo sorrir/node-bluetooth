@@ -1,9 +1,19 @@
-const { UartBluetoothServer, UartBluetoothClient } = require('./lib/uart/index')
-const argv = require('yargs').argv
+const { UartBluetoothServer, UartBluetoothClient } = require('../lib/uart/index')
 
 const DEFAULT_SERVER_NAME = 'SORRIR-Gatt-Server'
 
 let stop = async () => { }
+
+let argv = {}
+for(let arg of process.argv.slice(2)) {
+    if(arg.startsWith("--")) {
+        let keyVal = arg.substring(2).split("=")
+        argv[keyVal[0]] = keyVal.length > 1 ? keyVal[1] : true
+    } else {
+        console.error(`invalid argument '${arg}'`)
+    }
+}
+console.log(argv)
 
 async function main() {
     if (argv.server) {
