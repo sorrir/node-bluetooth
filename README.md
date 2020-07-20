@@ -171,13 +171,15 @@ await adapter.startDiscovery()
 await adapter.Discovering.waitForValue(true)
 await adapter.setDiscoveryFilter({ 'Transport': new Variant('s', 'le') })
 
-// find target device, connect to it and wait until the connection is established
+// find target device, connect to it
+// and wait until the connection is established
 let device = await adapter.getDeviceByName('SORRIR-Gatt-Server')
 await device.connect()
 await device.Connected.waitForValue(true)
 
 // get service by its UUID
-// the given UUID is the one of the UART-service used in the UartBluetoothServer
+// the given UUID is the one of the UART-service used
+// in the UartBluetoothServer
 let service = await device.getService(
     { UUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e' })
 
@@ -187,7 +189,8 @@ let writeCharacteristic =
 let notifyCharacteristic =
     await service.getCharacteristic({ Flags: 'notify' })
 
-// start notification and handle incoming messages of notify characteristic
+// start notification and handle incoming messages
+// of notify characteristic
 await notifyCharacteristic.startNotify()
 notifyCharacteristic.ValueAsString.addListener((text) => {
     console.log(text)
