@@ -105,7 +105,9 @@ Start server:
 ```js
 const server = new UartBluetoothServer('SORRIR-Gatt-Server')
 server.handleMessage = (message, sender) => {
-    console.log(`received: ${JSON.stringify({ msg: message, sender: sender })}`)
+    console.log(
+        `received: ${JSON.stringify(
+            { msg: message, sender: sender })}`)
     server.sendMessage(message)
 }
 await server.start()
@@ -115,20 +117,22 @@ Connect to server:
 ```js
 const client = new UartBluetoothClient('SORRIR-Gatt-Server')
 client.handleMessage = (message, sender) => {
-    console.log(`received: ${JSON.stringify({ msg: message, sender: sender })}`)
+    console.log(
+        `received: ${JSON.stringify(
+            { msg: message, sender: sender })}`)
 }
 await client.connect()
 await client.sendMessage('Hello World')
 ```
 
 Messages sent between the devices have the format
-```json
+```js
 {
-    'msg': <utf-8 encoded message>
-    'sender': <public name of the senders adapter>
+    msg: <utf-8 encoded message>
+    sender: <public name of the senders adapter>
 }
 ```
-While the functionality `UartBluetoothServer` and `UartBluetoothClient` might be expanded in the future, right now their use is limited to sending and receiving string messages.
+While the functionality of `UartBluetoothServer` and `UartBluetoothClient` might be expanded in the future, right now their use is limited to sending and receiving `string` messages.
 
 ### Custom uart server/client
 
@@ -174,11 +178,14 @@ await device.Connected.waitForValue(true)
 
 // get service by its UUID
 // the given UUID is the one of the UART-service used in the UartBluetoothServer
-let service = await device.getService({ UUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e' })
+let service = await device.getService(
+    { UUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e' })
 
 // get write and notify characteristics from service
-let writeCharacteristic = await service.getCharacteristic({ Flags: 'write' })
-let notifyCharacteristic = await service.getCharacteristic({ Flags: 'notify' })
+let writeCharacteristic =
+    await service.getCharacteristic({ Flags: 'write' })
+let notifyCharacteristic =
+    await service.getCharacteristic({ Flags: 'notify' })
 
 // start notification and handle incoming messages of notify characteristic
 await notifyCharacteristic.startNotify()
@@ -261,7 +268,8 @@ await adapter.Powered.waitForChange()
 // wait until powered is set to true
 await adapter.Powered.waitForValue(true)
 // do something on change
-adapter.Power.addListener((newValue) => { /* do something with newValue */ })
+adapter.Power.addListener(
+    (newValue) => { /* do something */ })
 ```
 
 ##### Methods
@@ -283,9 +291,11 @@ await adapter.Discovering.waitForValue(true)
 `Adapter` has no signals, however `DBusObjectManager` does. Signals, similarly to properties, emit an event whenever they are triggered:
 ```js
 // do something on 'InterfacesAdded' signal call
-dBusObjectManager.InterfacesAdded.addListener((path, objects) => { /* do something */ })
+dBusObjectManager.InterfacesAdded.addListener(
+    (path, objects) => { /* do something */ })
 // do something on 'InterfacesRemoved' signal call
-dBusObjectManager.InterfacesRemoved.addListener((path, interfaceNames) => { /* do something */ })
+dBusObjectManager.InterfacesRemoved.addListener(
+    (path, interfaceNames) => { /* do something */ })
 ```
 The parameters for the callback depend on the `Signal`.
 
@@ -304,7 +314,7 @@ Additionally, it is recommended to use TypeScript for the implementation of `hos
 `host interfaces` are classes that extend the base class `BaseHostInterface`. An example is `UartAdvertisment`:
 
 ```ts
-class UartAdvertisment extends BaseHostInterface {W
+class UartAdvertisment extends BaseHostInterface {
     LocalName: string
     ServiceUUIDs: string[]
     Includes: string[]
@@ -321,7 +331,8 @@ class UartAdvertisment extends BaseHostInterface {W
                 // define property via object with signature and value
                 'LocalName': { signature: 's', value: name },
                 // define property via Variant
-                'ServiceUUIDs': new Variant('as', ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']),
+                'ServiceUUIDs': new Variant('as',
+                    ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']),
                 'Includes': new Variant('as', ["tx-power"]),
                 'Type': new Variant('s', 'peripheral')
             }
