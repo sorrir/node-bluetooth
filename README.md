@@ -388,5 +388,6 @@ PrintString(s: string) {
 
 * Better documentation of code
 * Better implementation of host interfaces
+* Implement test cases
 * Implement further abstractions for cases similar to `uart`
 * ...
