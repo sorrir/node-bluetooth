@@ -1,5 +1,11 @@
 # @sorrir/bluetooth
 
+`@sorrir/bluetooth` is a BLE central library built uppon `bluez`, the official Linux Bluetooth protocol stack. It enables both connecting to other existing bluetooth devices, as well as implementing its own device and offers several layers of abstraction, depending on the required level of control.
+
+In its core, `@sorrir/bluetooth` is a full wrapper around `bluez` and tries to closely resemble the original structure. On the lowest level, `bluez` interfaces can be interacted with directly. This for instance allows a rather straightforward translation of code snippets or [examples from the bluez repository](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/test) that were originally written in other languages.
+
+`@sorrir/bluetooth` additionally packs a ready-made implementation of simple, text based device communication via Bluetooths Generic Attribute Profile (GATT).
+
 ## Prerequisites
 
 ### Setup
@@ -50,7 +56,7 @@ Make sure to replace `<YOUR_USER>` with your user name. Note that the above conf
 
 ### Package structure
 
-`@sorrir/bluetooth` in its current state contains two main parts: `core` and `uart`, offering different levels of abstraction. Both are included if you import the package as whole, for example with
+`@sorrir/bluetooth` in its current state contains two main parts: `core` and `uart`, offering different levels of abstraction. Both are included if you import the package as a whole, for example with
 ```ts
 import * as sb from '@sorrir/bluetooth'
 ```
@@ -68,4 +74,10 @@ Generally, every subfolder that is intended to be imported has an `index.js` fil
 
 ### Uart
 
-`uart` is a layer of abstraction above the `core` components that allows simple communication of two ore more bluetooth devices via the the Generic Attribute Profile (GATT). One device acts as server and the other devices as clients. After the connections are established, all devices can send or receive messages. The established channel is a bus, so every sent message is received by every connected device.
+`uart` is a layer of abstraction above the `core` components that allows simple communication of two ore more bluetooth devices via GATT. One device acts as server and the other devices as clients. After the connections are established, all devices can send or receive messages. The established channel is a bus, so every sent message is received by every connected device.
+
+## Get Started
+
+The following code snippet connects to
+
+The `Bluez` class 
