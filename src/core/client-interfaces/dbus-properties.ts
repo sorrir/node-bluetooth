@@ -29,8 +29,8 @@ export class DBusProperties extends BaseInterface<OrgfreedesktopDBusProperties> 
 	async getAll(iface: string) { return this._internal.GetAll(iface) }
 
 	//@signal({ name: 'PropertiesChanged', signature: 'sa{sv}as' })
-	propertiesChanged = new Signal<{ interfaceName: string, changedProperties: dict<string, Variant>, invalidatedProperties: Array<string> }>('PropertiesChanged', this._internal, {
-		interfaceName: null, changedProperties: null, invalidatedProperties: null
+	PropertiesChanged = new Signal<{ interfaceName: string, changedProperties: dict<string, Variant>, InvalidatedProperties: Array<string> }>('PropertiesChanged', this._internal, {
+		interfaceName: null, changedProperties: null, InvalidatedProperties: null
 	})
 
 

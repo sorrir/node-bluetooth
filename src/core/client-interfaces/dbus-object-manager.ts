@@ -23,8 +23,8 @@ export class DBusObjectManager extends BaseInterface<OrgfreedesktopDBusObjectMan
 	async getManagedObjects() { return this._internal.GetManagedObjects() }
 
 	//@signal({ name: 'InterfacesAdded', signature: 'oa{sa{sv}}' })
-	interfacesAdded = new Signal<{ path: path, object: dict<string, dict<string, Variant>> }>('InterfacesAdded', this._internal, { path: null, object: null })
+	InterfacesAdded = new Signal<{ path: path, objects: dict<string, dict<string, Variant>> }>('InterfacesAdded', this._internal, { path: null, objects: null })
 
 	//@signal({ name: 'InterfacesRemoved', signature: 'oas' })
-	interfacesRemoved = new Signal<{ path: path, interfaceNames: Array<string> }>('InterfacesRemoved', this._internal, { path: null, interfaceNames: null })
+	InterfacesRemoved = new Signal<{ path: path, interfaceNames: Array<string> }>('InterfacesRemoved', this._internal, { path: null, interfaceNames: null })
 }
