@@ -1,6 +1,6 @@
 # @sorrir/bluetooth
 
-`@sorrir/bluetooth` is a BLE central library built uppon `bluez`, the official Linux Bluetooth protocol stack. It enables both connecting to other existing bluetooth devices, as well as implementing its own device and offers several layers of abstraction, depending on the required level of control.
+`@sorrir/bluetooth` is a BLE central library built uppon `bluez`, the official Linux Bluetooth protocol stack. It offers several layers of abstraction, depending on the required level of control, enableing both connecting to other existing bluetooth devices, as well as implementing a custom device.
 
 In its core, `@sorrir/bluetooth` is a full wrapper around `bluez` and tries to closely resemble the original structure. On the lowest level, `bluez` interfaces can be interacted with directly. This for instance allows a rather straightforward translation of code snippets or [examples from the bluez repository](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/test) that were originally written in other languages.
 
@@ -50,7 +50,7 @@ Make sure to replace `<YOUR_USER>` with your user name. Note that the above conf
 
 ### Compatibility
 
-`@sorrir/bluetooth` itself is written in pure typescript that was transpiled to `ES5` and should therefore not cause any compatibility issues. Hower it uses `dbus-next` to communicate with `bluez`, which might limit the compatibility to certain architectures or node versions. For more info, visit the [dbus-next npm package](https://www.npmjs.com/package/dbus-next)
+`@sorrir/bluetooth` itself is written in pure typescript that was transpiled to `ES5` and should therefore not cause any compatibility issues. Hower it uses `dbus-next` to communicate with `bluez`, which might limit the compatibility to certain architectures or node versions. For more info, visit the [dbus-next npm package](https://www.npmjs.com/package/dbus-next).
 
 ## Overview
 
@@ -78,6 +78,125 @@ Generally, every subfolder that is intended to be imported has an `index.js` fil
 
 ## Get Started
 
-The following code snippet connects to
+### Simple uart server/client
 
-The `Bluez` class 
+The simplest way of establishing a connection between two Bluetooth capable devices is using `UartBluetoothServer` and `UartBluetoothClient`, as it requires no knowledge of `bluez` or its interfaces.
+
+The following code snippet implements functions to create a UART-GATT-server or connect to one under the existing name. The client emits a `Hello World` message, which is returned by the server.
+
+Start server:
+
+```js
+const server = new UartBluetoothServer('SORRIR-Gatt-Server')
+server.handleMessage = (message, sender) => {
+    console.log(`received: ${JSON.stringify({ msg: message, sender: sender })}`)
+    server.sendMessage(message)
+}
+await server.start()
+```
+
+Connect to server:
+```js
+const client = new UartBluetoothClient('SORRIR-Gatt-Server')
+client.handleMessage = (message, sender) => {
+    console.log(`received: ${JSON.stringify({ msg: message, sender: sender })}`)
+}
+await client.connect()
+await client.sendMessage('Hello World')
+```
+
+Messages sent between the devices have the format
+```json
+{
+    'msg': <utf-8 encoded message>
+    'sender': <public name of the senders adapter>
+}
+```
+While the functionality `UartBluetoothServer` and `UartBluetoothClient` might be expanded in the future, right now their use is limited to sending and receiving string messages.
+
+### Custom uart server/client
+
+If the functionality of `UartBluetoothClient` is too basic, it is also possible to connect to a GATT-server without it:
+
+```js
+// create central bluez object
+const bluez = await new Bluez().init()
+
+// connect to adapter and power it on
+let adapter = await Adapter.connect(bluez)
+await adapter.Powered.set(true)
+
+// adapter address
+let address = await adapter.Address.get()
+
+// start discovery, wait until the discovery has started and then set
+// the discovery filter to only show BLE devices
+await adapter.startDiscovery()
+await adapter.Discovering.waitForValue(true)
+await adapter.setDiscoveryFilter({ 'Transport': new Variant('s', 'le') })
+
+// find target device, connect to it and wait until the connection is established
+let device = await adapter.getDeviceByName('SORRIR-Gatt-Server')
+await device.connect()
+await device.Connected.waitForValue(true)
+
+// get service by its UUID
+// the given UUID is the one of the UART-service used in the UartBluetoothServer
+let service = await device.getService({ UUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e' })
+
+// get write and notify characteristics from service
+let writeCharacteristic = await service.getCharacteristic({ Flags: 'write' })
+let notifyCharacteristic = await service.getCharacteristic({ Flags: 'notify' })
+
+// start notification and handle incoming messages of notify characteristic
+await notifyCharacteristic.startNotify()
+notifyCharacteristic.ValueAsString.addListener((text) => {
+    console.log(text)
+})
+
+// write hello world message to write characteristic
+const json = {
+    msg: "Hello World",
+    sender: address
+}
+await writeCharacteristic.writeString(JSON.stringify(json))
+```
+
+Similarly, it possible to host a custom `UartBluetoothServer`:
+```js
+// create central bluez object
+const bluez = await new Bluez().init()
+
+// connect to adapter and power it on
+let adapter = await Adapter.connect(bluez)
+await adapter.Powered.set(true)
+
+// adapter address
+let address = await adapter.Address.get()
+
+// get advertising and GATT-manager
+let advertisingManager = await adapter.getAdvertisingManager()
+let gattManager = await adapter.getGattManager()
+
+// create and register advertisement
+let advertisement = new UartAdvertisment(bluez, 'SORRIR-Gatt-Server', 0)
+await advertisingManager.registerAdvertisement(advertisement.path, {})
+
+// create and register application
+let application = new UartApplication(bluez)
+await gattManager.registerApplication(application.path, {})
+
+// get write and notify characteristics from application
+let txCharacteristic = application.service.txCharacteristic
+let rxCharacteristic = application.service.rxCharacteristic
+
+// answer incoming messages with hello world message
+const json = {
+    msg: "Hello World",
+    sender: address
+}
+rxCharacteristic.onMessage = (message) => {
+    console.log(message)
+    txCharacteristic.sendMessage(JSON.stringify(json))
+}       
+```
