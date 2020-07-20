@@ -386,6 +386,7 @@ PrintString(s: string) {
 
 ## TODO
 
+* Publish full sourcecode in public repository
 * Better documentation of code
 * Better implementation of host interfaces
 * Implement test cases
