@@ -21,7 +21,7 @@ Afterwards you can install the package from npm
 npm install @sorrir/bluetooth
 ```
 The next step is optional, however it is **strongly** recommended. By default, `@sorrir/bluetooth` can only communicate with `bluez` as a root user. To avoid this, create the file `/etc/dbus-1/system.d/sorrir-bluetooth.conf` with the following content:
-```conf
+```xml
 <!-- This configuration file specifies the required security policies
      for @sorrir/bluetooth npm package to work. -->
 
@@ -40,7 +40,7 @@ The next step is optional, however it is **strongly** recommended. By default, `
 </busconfig>
 ```
 Make sure to replace `<YOUR_USER>` with your user name. Note that the above configuration is only for core BLE functionality using the Generic Attribute Profile (GATT). If intend to use more advanced functionality like custom agents, some additional send interfaces might have to be added. If you start getting `org.freedesktop.DBus.Error.AccessDenied` errors, add the required interface(s) from the following list:
-```conf
+```xml
 <allow send_interface="org.bluez.Agent1"/>
 <allow send_interface="org.bluez.Profile1"/>
 <allow send_interface="org.bluez.MediaEndpoint1"/>
