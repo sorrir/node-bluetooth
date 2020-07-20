@@ -1,6 +1,8 @@
 # @sorrir/bluetooth
 
-## Setup
+## Prerequisites
+
+### Setup
 
 First, make sure which version of `bluez` you have installed:
 ```console
@@ -40,3 +42,30 @@ Make sure to replace `<YOUR_USER>` with your user name. Note that the above conf
 <allow send_interface="org.mpris.MediaPlayer2.Player"/>
 ```
 
+### Compatibility
+
+`@sorrir/bluetooth` itself is written in pure typescript that was transpiled to `ES5` and should therefore not cause any compatibility issues. Hower it uses `dbus-next` to communicate with `bluez`, which might limit the compatibility to certain architectures or node versions. For more info, visit the [dbus-next npm package](https://www.npmjs.com/package/dbus-next)
+
+## Overview
+
+### Package structure
+
+`@sorrir/bluetooth` in its current state contains two main parts: `core` and `uart`, offering different levels of abstraction. Both are included if you import the package as whole, for example with
+```ts
+import * as sb from '@sorrir/bluetooth'
+```
+If you want to import the parts separately, you can do so for example with
+```ts
+import * as sbCore from '@sorrir/bluetooth/lib/core/index'
+import * as sbUart from '@sorrir/bluetooth/lib/uart/index'
+```
+Generally, every subfolder that is intended to be imported has an `index.js` file, which can be used to split imports into separate statements if desired.
+
+
+### Core
+
+`core` is for the most part a wrapper around the `bluez` dbus api. It allows either using interfaces as client (in other words, interfaces that are implemented as part of `bluez`) or providing interfaces as host (custom interfaces that are implemented by the user).
+
+### Uart
+
+`uart` is a layer of abstraction above the `core` components that allows simple communication of two ore more bluetooth devices via the the Generic Attribute Profile (GATT). One device acts as server and the other devices as clients. After the connections are established, all devices can send or receive messages. The established channel is a bus, so every sent message is received by every connected device.
