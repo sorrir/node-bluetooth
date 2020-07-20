@@ -10,6 +10,9 @@ let {
 
 export class UartAdvertisment extends BaseHostInterface {
     LocalName: string
+    ServiceUUIDs: string[]
+    Includes: string[]
+    Type: string
 
     constructor(bluez: Bluez, name: string, index: uint16 = 0) {
         super(bluez,
