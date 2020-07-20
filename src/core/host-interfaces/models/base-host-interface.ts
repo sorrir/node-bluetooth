@@ -9,7 +9,7 @@ let {
     ACCESS_READ, ACCESS_WRITE, ACCESS_READWRITE
 } = dbus.interface;
 
-export type property = {
+export type hostProperty = {
     signature: string
     value: dBusType
     valueTransform?: ((base: any) => dBusType)
@@ -20,12 +20,12 @@ export class BaseHostInterface extends dbus.interface.Interface {
     name: string
     path: path
     bluez: Bluez
-    managedProperties: dict<string, property>
+    managedProperties: dict<string, hostProperty>
 
     /**
      *  {@Link _init} has to be called after this
      * */
-    constructor(bluez: Bluez, path: path, name: string, managedProperties: dict<string, property> = {}) {
+    constructor(bluez: Bluez, path: path, name: string, managedProperties: dict<string, hostProperty> = {}) {
         super(name)
         this.name = name
         this.path = path
@@ -64,7 +64,7 @@ export class BaseHostInterface extends dbus.interface.Interface {
     }
 
     Get(name: string): Variant {
-        let property: property = this.managedProperties[name]
+        let property: hostProperty = this.managedProperties[name]
         return property === undefined ? undefined : this._getProperty(name, property)
     }
 
@@ -91,7 +91,7 @@ export class BaseHostInterface extends dbus.interface.Interface {
         this.bluez.updateInterface(this)
     }
 
-    _getProperty(name: string, property: property) {
+    _getProperty(name: string, property: hostProperty) {
         let value: dBusType = property.valueTransform ? property.valueTransform(this[name]) : this[name]
         return new Variant(property.signature, value || property.value)
     }
