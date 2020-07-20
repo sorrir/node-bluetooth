@@ -15,10 +15,10 @@ export declare class DBusProperties extends BaseInterface<OrgfreedesktopDBusProp
     get(iface: string, name: string): Promise<any>;
     set(iface: string, name: string, value: Variant): Promise<any>;
     getAll(iface: string): Promise<any>;
-    propertiesChanged: Signal<{
+    PropertiesChanged: Signal<{
         interfaceName: string;
         changedProperties: dict<string, Variant>;
-        invalidatedProperties: Array<string>;
+        InvalidatedProperties: Array<string>;
     }>;
 }
 //# sourceMappingURL=dbus-properties.d.ts.map

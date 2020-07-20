@@ -13,11 +13,11 @@ export declare class DBusObjectManager extends BaseInterface<OrgfreedesktopDBusO
     * Direct mappings to introspected properties, methods and signals of internal OrgfreedesktopDBusObjectManager
     */
     getManagedObjects(): Promise<any>;
-    interfacesAdded: Signal<{
+    InterfacesAdded: Signal<{
         path: path;
-        object: dict<string, dict<string, Variant>>;
+        objects: dict<string, dict<string, Variant>>;
     }>;
-    interfacesRemoved: Signal<{
+    InterfacesRemoved: Signal<{
         path: path;
         interfaceNames: Array<string>;
     }>;
