@@ -1,10 +1,10 @@
 # @sorrir/bluetooth
 
-`@sorrir/bluetooth` is a BLE central library built uppon `bluez`, the official Linux Bluetooth protocol stack. It offers several layers of abstraction, depending on the required level of control, enableing both connecting to other existing bluetooth devices, as well as implementing a custom device.
+`@sorrir/bluetooth` is a BLE central library built upon `bluez`, the official Linux Bluetooth protocol stack. It offers several layers of abstraction, allowing both connecting to other existing bluetooth devices, as well as implementing a custom device.
 
-In its core, `@sorrir/bluetooth` is a full wrapper around `bluez` and tries to closely resemble the original structure. On the lowest level, `bluez` interfaces can be interacted with directly. This for instance allows a rather straightforward translation of code snippets or [examples from the bluez repository](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/test) that were originally written in other languages.
+In its core, `@sorrir/bluetooth` is a full wrapper around `bluez` and tries to closely resemble the original structure. On the lowest level, `bluez` interfaces can be interacted with directly. This for instance allows a straightforward translation of code snippets or [examples from the bluez repository](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/test) that were originally written in other languages. It additionally packs a ready-made implementation of simple, text based device communication via Bluetooth's Generic Attribute Profile (GATT).
 
-`@sorrir/bluetooth` additionally packs a ready-made implementation of simple, text based device communication via Bluetooths Generic Attribute Profile (GATT).
+`@sorrir/bluetooth` has full TypeScript support. All necessary types come bundled with the package.
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ The next step is optional, however it is **strongly** recommended. By default, `
   </policy>
 </busconfig>
 ```
-Make sure to replace `<YOUR_USER>` with your user name. Note that the above configuration is only for core BLE functionality using the Generic Attribute Profile (GATT). If intend to use more advanced functionality like custom agents, some additional send interfaces might have to be added. If you start getting `org.freedesktop.DBus.Error.AccessDenied` errors, add the required interface(s) from the following list:
+Make sure to replace `<YOUR_USER>` with your user name. Note that the above configuration is only for core BLE functionality using the Generic Attribute Profile (GATT). If you intend to use more advanced functionality like custom agents, some additional send interfaces might have to be added. If you start receiving `org.freedesktop.DBus.Error.AccessDenied` errors, add the required interface(s) from the following list:
 ```xml
 <allow send_interface="org.bluez.Agent1"/>
 <allow send_interface="org.bluez.Profile1"/>
@@ -50,7 +50,7 @@ Make sure to replace `<YOUR_USER>` with your user name. Note that the above conf
 
 ### Compatibility
 
-`@sorrir/bluetooth` itself is written in pure typescript that was transpiled to `ES5` and should therefore not cause any compatibility issues. Hower it uses `dbus-next` to communicate with `bluez`, which might limit the compatibility to certain architectures or node versions. For more info, visit the [dbus-next npm package](https://www.npmjs.com/package/dbus-next).
+`@sorrir/bluetooth` itself is written in pure TypeScript that was transpiled to `ES5` and should therefore not cause any compatibility issues. However it uses `dbus-next` to communicate with `bluez`, which might limit the compatibility to certain architectures or node versions. For more info, visit the [dbus-next npm package](https://www.npmjs.com/package/dbus-next).
 
 ### TypeScript
 
@@ -74,7 +74,7 @@ Generally, every subfolder that is intended to be imported has an `index.js` fil
 
 ### Core
 
-`core` is for the most part a wrapper around the `bluez` dbus api. It allows either using interfaces as client (in other words, interfaces that are implemented as part of `bluez`) or providing interfaces as host (custom interfaces that are implemented by the user).
+`core` is for the most part a wrapper around the `bluez` D-Bus API. It allows either using interfaces as a client (to interfaces that are implemented as part of `bluez`) or providing interfaces as host (custom interfaces that are implemented by the user).
 
 ### Uart
 
@@ -86,11 +86,12 @@ Generally, every subfolder that is intended to be imported has an `index.js` fil
 
 The simplest way of establishing a connection between two Bluetooth capable devices is using `UartBluetoothServer` and `UartBluetoothClient`, as it requires no knowledge of `bluez` or its interfaces.
 
-The following code snippet implements functions to create a UART-GATT-server or connect to one under the existing name. The client emits a `Hello World` message, which is returned by the server.
+The following code snippet implements functions to create a UART-GATT-server or connect to one with the existing name. The client emits a `Hello World` message, which is returned by the server.
 
 Import required classes:
 
 ```js
+// 
 const { UartBluetoothServer, UartBluetoothClient } = require('@sorrir/bluetooth')
 ```
 
@@ -149,6 +150,7 @@ Afterwards we can connect to the adapter, turn it on and get its address.
 
 ```js
 // connect to adapter and power it on
+// '/org/bluez/hci0' is the default adapter on most devices
 let adapter = await Adapter.connect(bluez, '/org/bluez/hci0')
 await adapter.Powered.set(true)
 
@@ -171,7 +173,7 @@ await adapter.startDiscovery()
 await adapter.Discovering.waitForValue(true)
 await adapter.setDiscoveryFilter({ 'Transport': new Variant('s', 'le') })
 
-// find target device, connect to it
+// find target device by name, connect to it
 // and wait until the connection is established
 let device = await adapter.getDeviceByName('SORRIR-Gatt-Server')
 await device.connect()
@@ -208,7 +210,7 @@ let advertisingManager = await adapter.getAdvertisingManager()
 let gattManager = await adapter.getGattManager()
 
 // create and register advertisement
-let advertisement = new UartAdvertisment(bluez, 'SORRIR-Gatt-Server', 0)
+let advertisement = new UartAdvertisement(bluez, 'SORRIR-Gatt-Server', 0)
 await advertisingManager.registerAdvertisement(advertisement.path, {})
 
 // create and register application
@@ -237,14 +239,12 @@ Interfaces are the way that we can communicate with `bluez`. We have two differe
 All interfaces share three different ingredients:
 
 * `properties` that can be set or get
-* `methods` that can be called
+* `methods` that can be called by the user
 * `signals` that are called
-
-The difference between a `signal` and a `method` is, that the former is called as consequence to certain actions, for example after a parameter change, while the latter can be called others at will.
 
 ### Client interfaces
 
-`client interfaces` are provided by `bluez` itself and have well defined functionality. `client interfaces` are initialized with its classes static `connect` method.
+`client interfaces` are provided by `bluez` itself and have well defined functionality. `client interfaces` are initialized with its classes' static `connect` method.
 
 Say for example you would want to connect to the `Adapter` interface:
 ```js
@@ -310,14 +310,14 @@ The parameters for the callback depend on the `Signal`.
 
 Implementing `host interfaces` requires you to use Babel and enable the plugins `@babel/plugin-proposal-decorators`, as well as `@babel/plugin-proposal-class-properties`.
 
-Additionally, it is recommended to use TypeScript for the implementation of `host interfaces`. While it might be be possible to use the typescript compiler with the decorators as well, in the compilation of the package the plugin `@babel/plugin-transform-typescript` was used instead.
+Additionally, it is recommended to use TypeScript for the implementation of `host interfaces`. While it is most likely possible to use the typescript compiler with the decorators as well, in the compilation of the package the plugin `@babel/plugin-transform-typescript` was used for code transpiling.
 
 #### Implementation
 
-`host interfaces` are classes that extend the base class `BaseHostInterface`. An example is `UartAdvertisment`:
+`host interfaces` are classes that extend the base class `BaseHostInterface`. An example is `UartAdvertisement`:
 
 ```ts
-class UartAdvertisment extends BaseHostInterface {
+class UartAdvertisement extends BaseHostInterface {
     LocalName: string
     ServiceUUIDs: string[]
     Includes: string[]
@@ -340,7 +340,9 @@ class UartAdvertisment extends BaseHostInterface {
                 'Type': new Variant('s', 'peripheral')
             }
         )
-        // this call is important
+        // this call writes the properties and exposes the interface
+        // to the bus. It needs to be called, otherwise the interface
+        // is invisible
         this._init()
     }
 
@@ -350,7 +352,7 @@ class UartAdvertisment extends BaseHostInterface {
     }
 }
 ```
-Every `host interface` needs to have a well defined `path` and `name`. The name corresponds to the interface that is implemented, which is defined by `bluez` and provides possible properties, methods and signals. Unfortunately, as the implementation of host interfaces is in an early state in this package, there is no comprehensive list of interfaces and their paths that can be implemented. For now, see the [bluez documentation](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc) for that.
+Every `host interface` needs to have a well defined `path` and `name`. The name corresponds to the interface that is implemented, which is defined by `bluez`. It provides possible properties, methods and signals. Unfortunately, as the implementation of host interfaces is in an early state in this package, there is no comprehensive list of interfaces and their paths that can be implemented. For now, see the [bluez documentation](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc) in that matter.
 
 ##### Properties
 
@@ -362,7 +364,7 @@ Properties are initialized from within the constructor as parameter of the `supe
     valueTransform?: ((base: any) => dBusType) // transformation from actual value to D-Bus understandable value
 }
 ```
-The `signature` tells the D-Bus which type of value property is. For example, `s` is a String, `b` a Boolean. For a complete explanation of possible signatures, look into the [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#type-system).
+The `signature` tells the D-Bus which type the property is of. For example, `s` is a String, `b` a Boolean. For a complete explanation of possible signatures, look into the [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#type-system).
 
 `valueTransform` allows the variable to have a different native type to the actual D-Bus compliant value. For example, if you would want to save an index as `number`, but the interfaces specification requires a `string` prefixed by "index", you can do this:
 ```ts
@@ -385,7 +387,7 @@ StringAsArray(s: string) {
 }
 ```
 
-Methods can be overwritten if the already implemented interface is extended further, however `this._init()` has to be called again in the constructor, otherwise changes are not reflected.
+Methods can be overwritten if the already implemented interface is extended further, however `this._init()` has to be called again in the constructor of the expanding class, otherwise changes are not reflected.
 
 ##### Signals
 
@@ -398,11 +400,13 @@ PrintString(s: string) {
 }
 ```
 
+Like methods, signals can be overwritten but require a re-call of `this._init()` in the constructor of the expanding class.
+
 ## TODO
 
-* Publish full sourcecode in public repository
 * Better documentation of code
 * Better implementation of host interfaces
+* Unify implementation of host and client interfaces
 * Implement test cases
-* Implement further abstractions for cases similar to `uart`
+* Implement further abstractions
 * ...
