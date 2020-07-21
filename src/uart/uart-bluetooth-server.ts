@@ -2,7 +2,7 @@ import { Adapter } from '../core/client-interfaces/adapter'
 import { Exception } from 'handlebars'
 import { Bluez } from '../core/bluez'
 import { UartTxCharacteristic } from './host-interfaces/uart-tx-characteristic'
-import { UartAdvertisment } from './host-interfaces/uart-advertisement'
+import { UartAdvertisement } from './host-interfaces/uart-advertisement'
 import { UartApplication } from './host-interfaces/uart-application'
 import { LEAdvertisingManager } from '../core/client-interfaces/le-advertising-manager'
 import { GattManager } from '../core/client-interfaces/gatt-manager'
@@ -16,7 +16,7 @@ export class UartBluetoothServer {
     private _txCharacteristic: UartTxCharacteristic
     private _advertisingManager: LEAdvertisingManager
     private _gattManager: GattManager
-    private _advertisement: UartAdvertisment
+    private _advertisement: UartAdvertisement
 
 	constructor(name: string) {
 		this.name = name
@@ -33,7 +33,7 @@ export class UartBluetoothServer {
 		this._gattManager = await adapter.getGattManager()
 		await adapter.Powered.set(true)
 
-		this._advertisement = new UartAdvertisment(bluez, this.name, 0)
+		this._advertisement = new UartAdvertisement(bluez, this.name, 0)
 		this._application = new UartApplication(bluez)
 
 		await this._advertisingManager.registerAdvertisement(this._advertisement.path, {})

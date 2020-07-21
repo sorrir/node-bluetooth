@@ -8,7 +8,7 @@ let {
     ACCESS_READ, ACCESS_WRITE, ACCESS_READWRITE
 } = dbus.interface;
 
-export class UartAdvertisment extends BaseHostInterface {
+export class UartAdvertisement extends BaseHostInterface {
     LocalName: string
     ServiceUUIDs: string[]
     Includes: string[]
