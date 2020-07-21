@@ -1,6 +1,6 @@
 {
   "name": "@sorrir/bluetooth",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A BLE central library built uppon bluez, the official Linux Bluetooth protocol stack.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -56,5 +56,9 @@
     "@babel/plugin-transform-typescript": "^7.10.4",
     "@babel/preset-env": "^7.10.3",
     "@types/node": "^14.0.23"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sorrir/node-bluetooth.git"
   }
 }
