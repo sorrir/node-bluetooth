@@ -1,7 +1,7 @@
 import { BaseHostInterface } from "../../core/host-interfaces/models/base-host-interface";
 import { Bluez } from "../../core/bluez";
 import { uint16 } from "../../core/types";
-export declare class UartAdvertisment extends BaseHostInterface {
+export declare class UartAdvertisement extends BaseHostInterface {
     LocalName: string;
     ServiceUUIDs: string[];
     Includes: string[];
