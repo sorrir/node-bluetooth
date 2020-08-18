@@ -1,0 +1,1 @@
+sudo dbus-monitor --system | pcregrep --regex '^[^ ].*path=(?!\/org\/bluez\/hci[0-9]\/dev|\/org\/freedesktop\/(systemd1|UPower|NetworkManager)).*[\n](   .*[\n])+?(?!   )' -M
