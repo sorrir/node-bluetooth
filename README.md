@@ -1,6 +1,6 @@
 # @sorrir/bluetooth
 
-`@sorrir/bluetooth` is a BLE central library built upon `bluez`, the official Linux Bluetooth protocol stack. It offers several layers of abstraction, allowing both connecting to other existing bluetooth devices, as well as implementing a custom device.
+`@sorrir/bluetooth` is a BLE library built upon `bluez`, the official Linux Bluetooth protocol stack. It offers several layers of abstraction, allowing both implementing a central module as well as a custom peripheral.
 
 In its core, `@sorrir/bluetooth` is a full wrapper around `bluez` and tries to closely resemble the original structure. On the lowest level, `bluez` interfaces can be interacted with directly. This for instance allows a straightforward translation of code snippets or [examples from the bluez repository](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/test) that were originally written in other languages. It additionally packs a ready-made implementation of simple, text based device communication via Bluetooth's Generic Attribute Profile (GATT).
 
