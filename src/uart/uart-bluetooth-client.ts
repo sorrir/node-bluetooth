@@ -36,6 +36,7 @@ export class UartBluetoothClient {
 		await device.Connected.waitForValue(true)
         console.log('successfully connected')
 
+		await device.ServicesResolved.waitForValue(true)
 		let service = await device.getService({ UUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e' })
 
 		this._txCharacteristic = await service.getCharacteristic({ Flags: 'write' })

@@ -182,6 +182,7 @@ await device.Connected.waitForValue(true)
 // get service by its UUID
 // the given UUID is the one of the UART-service used
 // in the UartBluetoothServer
+await device.ServicesResolved.waitForValue(true)
 let service = await device.getService(
     { UUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e' })
 
