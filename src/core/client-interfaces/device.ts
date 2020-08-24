@@ -18,8 +18,20 @@ export class Device extends BaseInterface<Device1> {
         return new Device(bluez, await Device1.Connect(bluez.bus, path))
 	}
 	
-	async getService(filter: object = {}, options?: RetryOptions): Promise<GattService> {
-        return this.getChildObject('GattService1', GattService.connect, filter, options)
+	/**
+	 * Get a service that matches the given filter.
+	 * 
+	 * @param filter filter by any given property of {@link GattService}, usally by UUID.
+	 * @param retryOptions retry this operation a given number of times with the a given interval in ms.
+	 * @param servicesResolvedTimeoutMs timeout for resolving the devices' services
+	 * 
+	 * @returns A matching {@link GattService} object or undefined. If multiple services match the filter, the first one is returned
+	 * 
+	 * @throws an exception if the services cannot be resolved until the given timeout.
+	 */
+	async getService(filter: object = {}, retryOptions: RetryOptions = { maxRetries: 0, retryIntervalMs: 1000 }, servicesResolvedTimeoutMs = 10000): Promise<GattService | undefined> {
+		await this.ServicesResolved.waitForValue(true, servicesResolvedTimeoutMs)
+        return this.getChildObject('GattService1', GattService.connect, filter, retryOptions)
     }
 
     /**

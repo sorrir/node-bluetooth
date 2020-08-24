@@ -1,6 +1,7 @@
 import { DBusEventEmitter, GenericDBusEventEmitter } from "./dbus-event-emitter"
 import { dBusType, dict, Variant } from "../../types"
 import * as Helper from "../../helper"
+import { Exception } from "handlebars"
 
 export type ValueTransformer<I extends dBusType, O extends dBusType> = {
     readonly in: (value: O) => I
@@ -31,21 +32,35 @@ export class ReadOnlyProperty<T extends dBusType> extends GenericDBusEventEmitte
         return this.waitForEvent(() => true)
     }
 
-    async waitForValue(newValue: T): Promise<T> {
+    /**
+     * Wait for a specific value of the property.
+     * 
+     * @param newValue  the value to be reached
+     * @param timeoutMs timeout in milliseconds
+     * 
+     * @throws an exception if the new value is not reached until the given timeout.
+     */
+    async waitForValue(newValue: T, timeoutMs: number = 30000): Promise<void> {
         const _this = this
         // check the current value and simultaneously wait for an incoming event
-        return Helper.firstResolve<T>(
+        // 
+        return Helper.firstResolve<Boolean>(
             [
-                new Promise<T>(async (resolve, reject) => {
+                new Promise<Boolean>(async (resolve, reject) => {
                     let value = await _this.get()
                     if (value === newValue) {
-                        resolve(value)
+                        resolve(true)
                     } else {
-                        reject(value)
+                        reject()
                     }
                 }),
-                this.waitForEvent((value) => value === newValue)
-            ])
+                this.waitForEvent((value) => value === newValue).then(() => true),
+                Helper.sleep(timeoutMs).then(() => false)
+            ]).then((success) => {
+                if(!success) {
+                    throw new Exception(`Waiting for value timed out: '${this.name}' did not become '${newValue}'`)
+                }
+            })
     }
 }
 

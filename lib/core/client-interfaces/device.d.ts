@@ -11,7 +11,18 @@ export declare class Device extends BaseInterface<Device1> {
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<Device>;
-    getService(filter?: object, options?: RetryOptions): Promise<GattService>;
+    /**
+     * Get a service that matches the given filter.
+     *
+     * @param filter filter by any given property of {@link GattService}, usally by UUID.
+     * @param retryOptions retry this operation a given number of times with the a given interval in ms.
+     * @param servicesResolvedTimeoutMs timeout for resolving the devices' services
+     *
+     * @returns A matching {@link GattService} object or undefined. If multiple services match the filter, the first one is returned
+     *
+     * @throws an exception if the services cannot be resolved until the given timeout.
+     */
+    getService(filter?: object, retryOptions?: RetryOptions, servicesResolvedTimeoutMs?: number): Promise<GattService | undefined>;
     /**
     * Direct mappings to introspected properties, methods and signals of internal Device1
     */

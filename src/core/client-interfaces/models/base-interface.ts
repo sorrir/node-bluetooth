@@ -23,7 +23,7 @@ export class BaseInterface<T extends EventEmitter> {
         return <EventEmitter>this._internal
     }
 
-    async getChildObjectsRaw(interfaceName) {
+    async getChildObjectsRaw(interfaceName: string) {
         return this._bluez.getObjectData(interfaceName, this.path)
     }
 
@@ -35,7 +35,7 @@ export class BaseInterface<T extends EventEmitter> {
      * the first one is returned
      */
 
-    async getChildObject<T extends BaseInterface<any>>(interfaceName: string, constructor: _InterfaceConstructor<T>, filter: object = {}, options: RetryOptions = { maxRetries: 5, retryIntervalMs: 1000 }): Promise<T> {
+    async getChildObject<T extends BaseInterface<any>>(interfaceName: string, constructor: _InterfaceConstructor<T>, filter: object = {}, options: RetryOptions = { maxRetries: 0, retryIntervalMs: 1000 }): Promise<T | undefined> {
         const childData = await this._bluez.getObjectData(interfaceName, this.path)
         for (let [path, data] of Object.entries(childData)) {
             let isIn: boolean = true

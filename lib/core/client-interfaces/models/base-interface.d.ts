@@ -12,7 +12,7 @@ export declare class BaseInterface<T extends EventEmitter> {
      * @return the internal {@Link EventEmitter}
      */
     eventEmitter(): EventEmitter;
-    getChildObjectsRaw(interfaceName: any): Promise<{}>;
+    getChildObjectsRaw(interfaceName: string): Promise<{}>;
     /**
      * Finds a specific child that matches the given filter.
      *
@@ -20,7 +20,7 @@ export declare class BaseInterface<T extends EventEmitter> {
      * @return a child object if it exists. If multiple childs match the filter,
      * the first one is returned
      */
-    getChildObject<T extends BaseInterface<any>>(interfaceName: string, constructor: _InterfaceConstructor<T>, filter?: object, options?: RetryOptions): Promise<T>;
+    getChildObject<T extends BaseInterface<any>>(interfaceName: string, constructor: _InterfaceConstructor<T>, filter?: object, options?: RetryOptions): Promise<T | undefined>;
 }
 export {};
 //# sourceMappingURL=base-interface.d.ts.map
