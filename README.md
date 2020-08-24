@@ -23,7 +23,7 @@ npm install @sorrir/bluetooth
 The next step is optional, however it is **strongly** recommended. By default, `@sorrir/bluetooth` can only communicate with `bluez` as a root user. To avoid this, create the file `/etc/dbus-1/system.d/sorrir-bluetooth.conf` with the following content:
 ```xml
 <!-- This configuration file specifies the required security policies
-     for @sorrir/bluetooth npm package to work. -->
+     for the @sorrir/bluetooth npm package to work. -->
 
 <!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
