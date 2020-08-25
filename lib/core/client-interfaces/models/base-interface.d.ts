@@ -3,10 +3,21 @@ import { Bluez } from "../../bluez";
 import { EventEmitter } from "events";
 import { RetryOptions } from "../../helper";
 import { dBusType } from "../../types";
+import { DBusProperties } from "./dbus-properties";
+import { DBusObjectManager } from "./dbus-object-manager";
 declare type _InterfaceConstructor<T extends BaseInterface<any>> = (bluez: Bluez, path: string) => Promise<T>;
+/**
+ * @class
+ * Base class that all client interfaces extend.
+ *
+ * Wraps around an auto-generated interface, generated from the introspection
+ * of the provided interfaces by Bluez.
+ */
 export declare class BaseInterface<T extends EventEmitter> {
     protected readonly _bluez: Bluez;
     protected readonly _internal: T;
+    readonly Properties: DBusProperties;
+    readonly ObjectManager: DBusObjectManager;
     readonly path: string;
     constructor(bluez: Bluez, internal: T);
     /**

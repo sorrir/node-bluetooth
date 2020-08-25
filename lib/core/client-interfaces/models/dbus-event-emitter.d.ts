@@ -13,6 +13,7 @@ export declare class GenericDBusEventEmitter<InputEvent extends dict<string, dBu
     private readonly _eventEmitter;
     private readonly _eventKeys;
     private readonly _eventTransform;
+    private readonly _eventFilter;
     /**
      * @param event the name of the event to be wrapped.
      * @param eventEmitter EventEmitter to be wrapped. Usually the '_internal' EventEmitter of a client interface.
@@ -21,8 +22,9 @@ export declare class GenericDBusEventEmitter<InputEvent extends dict<string, dBu
      * accessing these types in the code. Consequently, they need to be provided twice.
      * @param eventTransform transformation from input to output event. Input events directly correspond to
      * the event ocurring on the D-Bus, the output event can be chosen freely.
+     * @param eventFilter filters incoming events. If set, only events are emitted for which this function returns true
      */
-    constructor(event: string, eventEmitter: EventEmitter, keyProvider: InputEvent, eventTransform: (event: InputEvent) => OutputEvent);
+    constructor(event: string, eventEmitter: EventEmitter, keyProvider: InputEvent, eventTransform: (event: InputEvent) => OutputEvent, eventFilter?: (event: OutputEvent) => boolean);
     /**
      * Wait for a specific event.
      *
@@ -31,10 +33,12 @@ export declare class GenericDBusEventEmitter<InputEvent extends dict<string, dBu
     waitForEvent(evaluator: (event: OutputEvent) => boolean): Promise<OutputEvent>;
     /**
      * Transforms a listener function and makes it accept the internal input parameters instead of the outer ones.
+     * Also filters it by a given eventFilter to only emit specific events.
      *
      * @param eventKeys names of the input event arguments.
      * @param listener the listener function.
      * @param eventTransform function that transforms input to output events
+     * @param eventFilter filters incoming events. Only events are emitted for which this function returns true
      */
     private static _transformListener;
     /**
@@ -60,10 +64,10 @@ export declare class GenericDBusEventEmitter<InputEvent extends dict<string, dBu
 }
 /**
  * @class
- * Simpler form of the {@link GenericDBusEventEmitter}, where output and input events are the same.
+ * Simpler form of the {@link GenericDBusEventEmitter}, where output and input events have the same type.
  */
 export declare class DBusEventEmitter<T extends dict<string, dBusType>> extends GenericDBusEventEmitter<T, T> {
-    constructor(event: string, eventEmitter: EventEmitter, keyProvider: T);
+    constructor(event: string, eventEmitter: EventEmitter, keyProvider: T, eventTransform?: (event: T) => T, eventFilter?: (event: T) => boolean);
 }
 export {};
 //# sourceMappingURL=dbus-event-emitter.d.ts.map

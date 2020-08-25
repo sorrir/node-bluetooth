@@ -3,18 +3,33 @@ import { EventEmitter } from "events"
 import { ReturnFunction, RetryOptions, sleep } from "../../helper"
 import { ReadOnlyProperty, ReadWriteProperty } from "./property"
 import { dBusType } from "../../types"
+import { DBusProperties } from "./dbus-properties"
+import { DBusObjectManager } from "./dbus-object-manager"
 
 type _InterfaceConstructor<T extends BaseInterface<any>> = (bluez: Bluez, path: string) => Promise<T>
+
+/**
+ * @class
+ * Base class that all client interfaces extend.
+ * 
+ * Wraps around an auto-generated interface, generated from the introspection
+ * of the provided interfaces by Bluez.
+ */
 
 export class BaseInterface<T extends EventEmitter> {
     protected readonly _bluez: Bluez
     protected readonly _internal: T
+    readonly Properties: DBusProperties
+    readonly ObjectManager: DBusObjectManager
     readonly path: string
 
     constructor(bluez: Bluez, internal: T) {
         this._bluez = bluez
         this._internal = internal
-        this.path = (<any>internal).dbusObject.path
+        let generatedDBusObject = <any>internal
+        this.path = generatedDBusObject.dbusObject.path
+        this.Properties = new DBusProperties(generatedDBusObject.dbusInterfaceName, generatedDBusObject.propertiesDBusInterface)
+        this.ObjectManager = bluez.objectManager.branch(this.path)
     }
 
     /**

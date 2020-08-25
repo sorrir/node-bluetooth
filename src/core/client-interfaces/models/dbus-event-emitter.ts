@@ -16,6 +16,7 @@ export class GenericDBusEventEmitter<InputEvent extends dict<string, dBusType>, 
     private readonly _eventEmitter: EventEmitter
     private readonly _eventKeys: (keyof InputEvent)[]
     private readonly _eventTransform: (event: InputEvent) => OutputEvent
+    private readonly _eventFilter: (event: OutputEvent) => boolean
 
     /**
      * @param event the name of the event to be wrapped.
@@ -25,13 +26,15 @@ export class GenericDBusEventEmitter<InputEvent extends dict<string, dBusType>, 
      * accessing these types in the code. Consequently, they need to be provided twice.
      * @param eventTransform transformation from input to output event. Input events directly correspond to
      * the event ocurring on the D-Bus, the output event can be chosen freely.
+     * @param eventFilter filters incoming events. If set, only events are emitted for which this function returns true
      */
 
-    constructor(event: string, eventEmitter: EventEmitter, keyProvider: InputEvent, eventTransform: (event: InputEvent) => OutputEvent) {
+    constructor(event: string, eventEmitter: EventEmitter, keyProvider: InputEvent, eventTransform: (event: InputEvent) => OutputEvent, eventFilter: (event: OutputEvent) => boolean = () => true) {
         this.eventName = event
         this._eventEmitter = eventEmitter
         this._eventKeys = Object.keys(keyProvider)
         this._eventTransform = eventTransform
+        this._eventFilter = eventFilter
     }
 
     /**
@@ -59,18 +62,19 @@ export class GenericDBusEventEmitter<InputEvent extends dict<string, dBusType>, 
 
     /**
      * Transforms a listener function and makes it accept the internal input parameters instead of the outer ones.
+     * Also filters it by a given eventFilter to only emit specific events.
      * 
      * @param eventKeys names of the input event arguments.
      * @param listener the listener function.
      * @param eventTransform function that transforms input to output events
+     * @param eventFilter filters incoming events. Only events are emitted for which this function returns true
      */
 
-    private static _transformListener<T, Y>(eventKeys: eventKeys<T>, listener: eventType<Y>, eventTransform: (event: T) => Y) {
+    private static _transformListener<T, Y>(eventKeys: eventKeys<T>, listener: eventType<Y>, eventTransform: (event: T) => Y, eventFilter: (event: Y) => boolean) {
         return (...eventArgs: any[]) => {
-            try {
-                listener(GenericDBusEventEmitter._eventArgsToEvent(eventKeys, eventArgs, eventTransform))
-            } catch (e) {
-                console.log(e)
+            const event = GenericDBusEventEmitter._eventArgsToEvent(eventKeys, eventArgs, eventTransform)
+            if (eventFilter(event)) {
+                listener(event)
             }
         }
     }
@@ -92,7 +96,7 @@ export class GenericDBusEventEmitter<InputEvent extends dict<string, dBusType>, 
     }
 
     addListener(listener: eventType<OutputEvent>) {
-        this._eventEmitter.addListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform))
+        this._eventEmitter.addListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform, this._eventFilter))
     }
 
     listeners() {
@@ -104,23 +108,23 @@ export class GenericDBusEventEmitter<InputEvent extends dict<string, dBusType>, 
     }
 
     off(listener: eventType<OutputEvent>) {
-        return this._eventEmitter.off(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform))
+        return this._eventEmitter.off(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform, this._eventFilter))
     }
 
     on(listener: eventType<OutputEvent>) {
-        return this._eventEmitter.on(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform))
+        return this._eventEmitter.on(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform, this._eventFilter))
     }
 
     once(listener: eventType<OutputEvent>) {
-        return this._eventEmitter.once(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform))
+        return this._eventEmitter.once(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform, this._eventFilter))
     }
 
     prependListener(listener: eventType<OutputEvent>) {
-        return this._eventEmitter.prependListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform))
+        return this._eventEmitter.prependListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform, this._eventFilter))
     }
 
     prependOnceListener(listener: eventType<OutputEvent>) {
-        return this._eventEmitter.prependOnceListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform))
+        return this._eventEmitter.prependOnceListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform, this._eventFilter))
     }
 
     removeAllListeners() {
@@ -128,7 +132,7 @@ export class GenericDBusEventEmitter<InputEvent extends dict<string, dBusType>, 
     }
 
     removeListener(listener: eventType<OutputEvent>) {
-        return this._eventEmitter.removeListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform))
+        return this._eventEmitter.removeListener(this.eventName, GenericDBusEventEmitter._transformListener(this._eventKeys, listener, this._eventTransform, this._eventFilter))
     }
 
     rawListeners() {
@@ -142,11 +146,11 @@ export class GenericDBusEventEmitter<InputEvent extends dict<string, dBusType>, 
 
 /**
  * @class
- * Simpler form of the {@link GenericDBusEventEmitter}, where output and input events are the same.
+ * Simpler form of the {@link GenericDBusEventEmitter}, where output and input events have the same type.
  */
 
 export class DBusEventEmitter<T extends dict<string, dBusType>> extends GenericDBusEventEmitter<T, T> {
-    constructor(event: string, eventEmitter: EventEmitter, keyProvider: T) {
-        super(event, eventEmitter, keyProvider, (event: T) => event)
+    constructor(event: string, eventEmitter: EventEmitter, keyProvider: T, eventTransform: (event: T) => T = (event: T) => event, eventFilter: (event: T) => boolean = () => true) {
+        super(event, eventEmitter, keyProvider, eventTransform, eventFilter)
     }
 }

@@ -1,5 +1,5 @@
 import { MessageBus } from 'dbus-next/lib/bus';
-import { DBusObjectManager } from "./client-interfaces/dbus-object-manager";
+import { DBusObjectManager } from "./client-interfaces/models/dbus-object-manager";
 import { BaseHostInterface } from './host-interfaces/models/base-host-interface';
 import { DBusObject } from "./client-interfaces/models/dbus-object";
 import { path } from './types';

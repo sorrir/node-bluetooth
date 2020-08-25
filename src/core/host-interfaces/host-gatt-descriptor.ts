@@ -5,7 +5,7 @@ import { dict, path, Variant, uint16 } from '../types'
 
 import { BaseHostObject } from './models/base-host-object'
 import { BaseHostInterface } from './models/base-host-interface'
-import { DBusObjectManager } from '../client-interfaces/dbus-object-manager'
+import { DBusObjectManager } from '../client-interfaces/models/dbus-object-manager'
 import { Bluez } from '../bluez'
 import { DBusObject } from "../client-interfaces/models/dbus-object"
 import { HostGattCharacteristic } from './host-gatt-characteristic'

@@ -42,28 +42,6 @@ export class Device extends BaseInterface<Device1> {
 		return this.getChildObject('GattService1', GattService.connect, filter, retryOptions)
 	}
 
-	/**
-	 * Get all properties.
-	 * 
-	 * @returns properties with their respective names and values.
-	 */
-
-	async getAllProperties(): Promise<{ [K in string]: dBusType }> {
-		let properties = {}
-		for (let [name, variant] of Object.entries(await this.getAllPropertiesAsVariants())) {
-			properties[name] = variant.value
-		}
-		return properties
-	}
-
-	/**
-	 * Get all properties as `Variant`s.
-	 * 
-	 * @returns properties with their respective names, values and signature.
-	 */
-
-	async getAllPropertiesAsVariants(): Promise<{ [K in string]: Variant }> { return this._internal.getProperties() }
-
     /*
     * Direct mappings to introspected properties, methods and signals of internal Device1
     */

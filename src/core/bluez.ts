@@ -1,6 +1,6 @@
 import { MessageBus } from 'dbus-next/lib/bus'
 import * as dbus from "dbus-next"
-import { DBusObjectManager } from "./client-interfaces/dbus-object-manager"
+import { DBusObjectManager } from "./client-interfaces/models/dbus-object-manager"
 import { BaseHostInterface } from './host-interfaces/models/base-host-interface'
 import { DBusObject } from "./client-interfaces/models/dbus-object"
 import { path } from './types'
@@ -15,7 +15,7 @@ export class Bluez {
 
     async init() {
         await this.bus.requestName('org.bluez')
-        this.objectManager = await DBusObjectManager.connect(this, '/')
+        this.objectManager = await DBusObjectManager.__connect(this)
         return this
     }
 
