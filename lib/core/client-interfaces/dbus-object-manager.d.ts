@@ -9,9 +9,6 @@ export declare class DBusObjectManager extends BaseInterface<OrgfreedesktopDBusO
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<DBusObjectManager>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal OrgfreedesktopDBusObjectManager
-    */
     getManagedObjects(): Promise<any>;
     InterfacesAdded: Signal<{
         path: path;

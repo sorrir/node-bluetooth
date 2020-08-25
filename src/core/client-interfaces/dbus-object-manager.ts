@@ -15,7 +15,7 @@ export class DBusObjectManager extends BaseInterface<OrgfreedesktopDBusObjectMan
 		return new DBusObjectManager(bluez, await OrgfreedesktopDBusObjectManager.Connect(bluez.bus, path))
 	}
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal OrgfreedesktopDBusObjectManager
     */
 

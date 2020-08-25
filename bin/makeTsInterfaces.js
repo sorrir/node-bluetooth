@@ -33,7 +33,7 @@ export class @class0 extends BaseInterface<@class1> {
         return new @class0(bluez, await @class1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal @class1
     */
 

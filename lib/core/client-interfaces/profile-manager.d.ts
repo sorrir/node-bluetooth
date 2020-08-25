@@ -9,9 +9,6 @@ export declare class ProfileManager extends BaseInterface<ProfileManager1> {
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<ProfileManager>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal ProfileManager1
-    */
     registerProfile(profile: path, UUID: String, options: dict<string, Variant>): Promise<any>;
     unregisterProfile(profile: path): Promise<any>;
 }

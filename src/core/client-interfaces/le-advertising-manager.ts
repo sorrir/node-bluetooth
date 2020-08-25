@@ -16,7 +16,7 @@ export class LEAdvertisingManager extends BaseInterface<LEAdvertisingManager1> {
         return new LEAdvertisingManager(bluez, await LEAdvertisingManager1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal LEAdvertisingManager1
     */
 

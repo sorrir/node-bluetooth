@@ -15,7 +15,7 @@ export class ProfileManager extends BaseInterface<ProfileManager1> {
         return new ProfileManager(bluez, await ProfileManager1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal ProfileManager1
     */
 

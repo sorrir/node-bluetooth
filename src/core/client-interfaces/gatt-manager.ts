@@ -15,7 +15,7 @@ export class GattManager extends BaseInterface<GattManager1> {
         return new GattManager(bluez, await GattManager1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal GattManager1
     */
 

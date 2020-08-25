@@ -16,7 +16,7 @@ export class GattDescriptor extends BaseInterface<GattDescriptor1> {
         return new GattDescriptor(bluez, await GattDescriptor1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal GattDescriptor1
     */
 

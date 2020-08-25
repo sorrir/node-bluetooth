@@ -3,12 +3,18 @@ import { Adapter1 } from "./generated/Adapter1";
 import { BaseInterface } from "./models/base-interface";
 import { Property, ReadOnlyProperty } from "./models/property";
 import { path, dict, Variant } from "../types";
-import { RetryOptions } from "../helper";
+import { RetryOptions, InterfaceFilterSet } from "../helper";
 import { Device } from "./device";
 import { LEAdvertisingManager } from "./le-advertising-manager";
 import { GattManager } from "./gatt-manager";
 import { Media } from "./media";
 import { NetworkServer } from "./network-server";
+/**
+ * @class
+ * Bluetooth adapter that manages devices.
+ *
+ * Representation of Bluezs `Adapter1` interface.
+ */
 export declare class Adapter extends BaseInterface<Adapter1> {
     /**
     * Hide constructor, initialization shall be done asynchronously with connect
@@ -16,49 +22,70 @@ export declare class Adapter extends BaseInterface<Adapter1> {
     private constructor();
     static connect(bluez: Bluez, path?: String): Promise<Adapter>;
     /**
-     * Get information about all discovered devices
+     * Get information about all discovered devices.
      *
-     * @return An object of the format {'device_path' : data}
+     * @return An object of the format {'device_path' : data}.
      */
-    getDevicesRaw(): Promise<{}>;
+    getDevicesRaw(): Promise<{
+        [K in path]: any;
+    }>;
     /**
-     * Returns a device with the given address
+     * Returns a device with the given address.
      *
-     * @param address Bluetooth device address
-     * @return {@Link Device} if it exists
+     * @param address Bluetooth device address.
+     * @return `Device` if it exists.
      */
     getDeviceByAddress(address: string, options?: RetryOptions): Promise<Device>;
     /**
-     * Returns a device with the given name
+     * Returns a device with the given name.
      *
-     * @param address Bluetooth device name
-     * @return {@Link Device} if it exists
+     * @param address Bluetooth device name.
+     * @return `Device` if it exists.
      */
     getDeviceByName(name: string, options?: RetryOptions): Promise<Device>;
     /**
-     * Returns a device with the given alias
+     * Returns a device with the given alias.
      *
-     * @param address Bluetooth device alias
-     * @return {@Link Device} if it exists
+     * @param address Bluetooth device alias.
+     * @return `Device` if it exists.
      */
     getDeviceByAlias(alias: string, options?: RetryOptions): Promise<Device>;
     /**
-     * Finds a specific device that matches the given filter.
-     *
-     * @param filter Filter, for example ```{'Name' : 'device_name'}```
-     * @return {@Link Device} if it exists. If multiple devices match the filter,
-     * the first one is returned
-     */
-    getDevice(filter?: object, options?: RetryOptions): Promise<Device>;
-    clearDevices(): Promise<void>;
-    removeDeviceByPath(path: string): Promise<any>;
-    getAdvertisingManager(): Promise<LEAdvertisingManager>;
-    getGattManager(): Promise<GattManager>;
-    getMedia(): Promise<Media>;
-    getNetworkServer(): Promise<NetworkServer>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal Adapter1
+    * Get a device that matches the given filter.
+    *
+    * @param filter filter by any given property of `Device`, usally by UUID.
+    * @param retryOptions retry this operation with a given number of times and interval in ms.
+    *
+    * @returns `Device` object or undefined.
+    * If multiple services match the filter, the first one is returned.
     */
+    getDevice(filter?: InterfaceFilterSet<Device>, options?: RetryOptions): Promise<Device | undefined>;
+    /**
+     * Deletes all devices managed by the adapter.
+     */
+    clearDevices(): Promise<void>;
+    /**
+     * Deletes a specific device registred under the given path.
+     *
+     * @param path the path of the `Device`.
+     */
+    removeDeviceByPath(path: string): Promise<any>;
+    /**
+     * Get the adapters `LEAdvertisingManager`
+     */
+    getAdvertisingManager(): Promise<LEAdvertisingManager>;
+    /**
+     * Get the adapters `GattManager`
+     */
+    getGattManager(): Promise<GattManager>;
+    /**
+     * Get the adapters `Media`
+     */
+    getMedia(): Promise<Media>;
+    /**
+     * Get the adapters `NetworkServer`
+     */
+    getNetworkServer(): Promise<NetworkServer>;
     Address: ReadOnlyProperty<string>;
     AddressType: ReadOnlyProperty<string>;
     Name: ReadOnlyProperty<string>;

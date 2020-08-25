@@ -7,9 +7,6 @@ export declare class NetworkServer extends BaseInterface<NetworkServer1> {
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<NetworkServer>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal NetworkServer1
-    */
     register(uuid: String, bridge: String): Promise<any>;
     unregister(uuid: String): Promise<any>;
 }

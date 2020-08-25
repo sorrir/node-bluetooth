@@ -4,12 +4,19 @@ import { BaseInterface } from "./models/base-interface"
 import { Signal } from "./models/signal"
 import { Property, ReadOnlyProperty } from "./models/property"
 import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant } from "../types"
-import { RetryOptions } from "../helper"
+import { RetryOptions, InterfaceFilterSet } from "../helper"
 import { Device } from "./device"
 import { LEAdvertisingManager } from "./le-advertising-manager"
 import { GattManager } from "./gatt-manager"
 import { Media } from "./media"
 import { NetworkServer } from "./network-server"
+
+/**
+ * @class
+ * Bluetooth adapter that manages devices.
+ * 
+ * Representation of Bluezs `Adapter1` interface.
+ */
 
 export class Adapter extends BaseInterface<Adapter1> {
 	/**
@@ -23,20 +30,20 @@ export class Adapter extends BaseInterface<Adapter1> {
 	}
 
 	/**
-     * Get information about all discovered devices
+     * Get information about all discovered devices.
      * 
-     * @return An object of the format {'device_path' : data}
+     * @return An object of the format {'device_path' : data}.
      */
 
-	async getDevicesRaw() {
+	async getDevicesRaw(): Promise<{ [K in path] : any}> {
 		return this._bluez.getObjectData('Device1', this.path)
 	}
 
     /**
-     * Returns a device with the given address
+     * Returns a device with the given address.
      * 
-     * @param address Bluetooth device address
-     * @return {@Link Device} if it exists
+     * @param address Bluetooth device address.
+     * @return `Device` if it exists.
      */
 
 	async getDeviceByAddress(address: string, options?: RetryOptions): Promise<Device> {
@@ -44,10 +51,10 @@ export class Adapter extends BaseInterface<Adapter1> {
 	}
 
     /**
-     * Returns a device with the given name
+     * Returns a device with the given name.
      * 
-     * @param address Bluetooth device name
-     * @return {@Link Device} if it exists
+     * @param address Bluetooth device name.
+     * @return `Device` if it exists.
      */
 
 	async getDeviceByName(name: string, options?: RetryOptions): Promise<Device> {
@@ -55,44 +62,72 @@ export class Adapter extends BaseInterface<Adapter1> {
 	}
 
     /**
-     * Returns a device with the given alias
+     * Returns a device with the given alias.
      * 
-     * @param address Bluetooth device alias
-     * @return {@Link Device} if it exists
+     * @param address Bluetooth device alias.
+     * @return `Device` if it exists.
      */
 
 	async getDeviceByAlias(alias: string, options?: RetryOptions): Promise<Device> {
 		return this.getDevice({ 'Alias': alias }, options)
 	}
 
-    /**
-     * Finds a specific device that matches the given filter.
-     * 
-     * @param filter Filter, for example ```{'Name' : 'device_name'}```
-     * @return {@Link Device} if it exists. If multiple devices match the filter,
-     * the first one is returned
-     */
+	/**
+	* Get a device that matches the given filter.
+	* 
+	* @param filter filter by any given property of `Device`, usally by UUID.
+	* @param retryOptions retry this operation with a given number of times and interval in ms.
+	* 
+	* @returns `Device` object or undefined.
+	* If multiple services match the filter, the first one is returned.
+	*/
 
-	async getDevice(filter: object = {}, options?: RetryOptions): Promise<Device> {
+	async getDevice(filter: InterfaceFilterSet<Device> = {}, options?: RetryOptions): Promise<Device | undefined> {
 		return this.getChildObject('Device1', Device.connect, filter, options)
 	}
+
+	/**
+	 * Deletes all devices managed by the adapter.
+	 */
 
 	async clearDevices() {
 		const paths = await this.getDevicesRaw().then((data) => Object.keys(data))
 		paths.forEach(async (path) => await this.removeDeviceByPath(path))
 	}
 
+	/**
+	 * Deletes a specific device registred under the given path.
+	 * 
+	 * @param path the path of the `Device`.
+	 */
+
 	async removeDeviceByPath(path: string) { return this._internal.RemoveDevice(path) }
+
+	/**
+	 * Get the adapters `LEAdvertisingManager`
+	 */
 
 	async getAdvertisingManager() { return LEAdvertisingManager.connect(this._bluez, this.path) }
 
+	/**
+	 * Get the adapters `GattManager`
+	 */
+
 	async getGattManager() { return GattManager.connect(this._bluez, this.path) }
+
+	/**
+	 * Get the adapters `Media`
+	 */
 
 	async getMedia() { return Media.connect(this._bluez, this.path) }
 
+	/**
+	 * Get the adapters `NetworkServer`
+	 */
+
 	async getNetworkServer() { return NetworkServer.connect(this._bluez, this.path) }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal Adapter1
     */
 

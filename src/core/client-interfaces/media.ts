@@ -15,7 +15,7 @@ export class Media extends BaseInterface<Media1> {
         return new Media(bluez, await Media1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal Media1
     */
 

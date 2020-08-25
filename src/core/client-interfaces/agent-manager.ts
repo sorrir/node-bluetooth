@@ -15,7 +15,7 @@ export class AgentManager extends BaseInterface<AgentManager1> {
         return new AgentManager(bluez, await AgentManager1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal AgentManager1
     */
 

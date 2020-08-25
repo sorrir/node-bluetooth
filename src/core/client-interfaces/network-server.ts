@@ -15,7 +15,7 @@ export class NetworkServer extends BaseInterface<NetworkServer1> {
         return new NetworkServer(bluez, await NetworkServer1.Connect(bluez.bus, path))
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal NetworkServer1
     */
 

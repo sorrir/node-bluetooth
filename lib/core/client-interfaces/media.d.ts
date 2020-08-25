@@ -9,9 +9,6 @@ export declare class Media extends BaseInterface<Media1> {
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<Media>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal Media1
-    */
     registerEndpoint(endpoint: path, properties: dict<string, Variant>): Promise<any>;
     unregisterEndpoint(endpoint: path): Promise<any>;
     registerPlayer(player: path, properties: dict<string, Variant>): Promise<any>;

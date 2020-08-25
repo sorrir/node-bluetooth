@@ -8,9 +8,6 @@ export declare class AgentManager extends BaseInterface<AgentManager1> {
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<AgentManager>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal AgentManager1
-    */
     registerAgent(agent: path, capability: String): Promise<any>;
     unregisterAgent(agent: path): Promise<any>;
     requestDefaultAgent(agent: path): Promise<any>;

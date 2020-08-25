@@ -4,7 +4,7 @@ import { BaseInterface } from "./models/base-interface"
 import { Signal } from "./models/signal"
 import { Property, ReadOnlyProperty } from "./models/property"
 import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant } from "../types"
-import { RetryOptions } from "../helper"
+import { RetryOptions, InterfaceFilterSet } from "../helper"
 import { GattCharacteristic } from "./gatt-characteristic"
 
 export class GattService extends BaseInterface<GattService1> {
@@ -18,15 +18,31 @@ export class GattService extends BaseInterface<GattService1> {
         return new GattService(bluez, await GattService1.Connect(bluez.bus, path))
     }
 
-    async getCharacteristicsRaw() {
+    /**
+     * Get information about all characteristics.
+     * 
+     * @returns An object of the format {'characteristic_path' : data}.
+     */
+
+    async getCharacteristicsRaw(): Promise<{ [K in path] : any}> {
         return this.getChildObjectsRaw('GattCharacteristic1')
     }
 
-    async getCharacteristic(filter: object = {}, options?: RetryOptions): Promise<GattCharacteristic> {
+    /**
+	* Get a characteristic that matches the given filter.
+	* 
+	* @param filter filter by any given property of `GattCharacteristic`, usally by UUID.
+	* @param retryOptions retry this operation with a given number of times and interval in ms.
+	* 
+	* @returns `GattCharacteristic` object or undefined.
+	* If multiple services match the filter, the first one is returned.
+	*/
+
+    async getCharacteristic(filter: InterfaceFilterSet<GattCharacteristic> = {}, options?: RetryOptions): Promise<GattCharacteristic | undefined> {
         return this.getChildObject('GattCharacteristic1', GattCharacteristic.connect, filter, options)
     }
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal GattService1
     */
 

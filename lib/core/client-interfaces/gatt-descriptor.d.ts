@@ -9,9 +9,6 @@ export declare class GattDescriptor extends BaseInterface<GattDescriptor1> {
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<GattDescriptor>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal GattDescriptor1
-    */
     UUID: ReadOnlyProperty<string>;
     Characteristic: ReadOnlyProperty<string>;
     Value: ReadOnlyProperty<number[]>;

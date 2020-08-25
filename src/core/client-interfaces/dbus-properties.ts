@@ -15,7 +15,7 @@ export class DBusProperties extends BaseInterface<OrgfreedesktopDBusProperties> 
 		return new DBusProperties(bluez, await OrgfreedesktopDBusProperties.Connect(bluez.bus, path))
 	}
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal OrgfreedesktopDBusProperties
     */
 

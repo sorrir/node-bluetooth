@@ -3,38 +3,46 @@ import { Device1 } from "./generated/Device1"
 import { BaseInterface } from "./models/base-interface"
 import { Signal } from "./models/signal"
 import { Property, ReadOnlyProperty } from "./models/property"
-import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant } from "../types"
-import { RetryOptions } from "../helper"
+import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant, dBusType } from "../types"
+import { RetryOptions, InterfaceFilterSet } from "../helper"
 import { GattService } from "./gatt-service"
 
+/**
+ * @class
+ * Remote device that has been discovered by a `Adapter`.
+ * 
+ * Representation of Bluezs `Device1` interface.
+ */
+
 export class Device extends BaseInterface<Device1> {
-     /**
-     * Hide constructor, initialization shall be done asynchronously with connect
-     */
+	/**
+	* Hide constructor, initialization shall be done asynchronously with connect
+	*/
 
-    private constructor(bluez: Bluez, internal: Device1) { super(bluez, internal) }
+	private constructor(bluez: Bluez, internal: Device1) { super(bluez, internal) }
 
-    static async connect(bluez: Bluez, path: String) {
-        return new Device(bluez, await Device1.Connect(bluez.bus, path))
+	static async connect(bluez: Bluez, path: String) {
+		return new Device(bluez, await Device1.Connect(bluez.bus, path))
 	}
-	
+
 	/**
 	 * Get a service that matches the given filter.
 	 * 
 	 * @param filter filter by any given property of {@link GattService}, usally by UUID.
-	 * @param retryOptions retry this operation a given number of times with the a given interval in ms.
+	 * @param retryOptions retry this operation with a given number of times and interval in ms.
 	 * @param servicesResolvedTimeoutMs timeout for resolving the devices' services
 	 * 
-	 * @returns A matching {@link GattService} object or undefined. If multiple services match the filter, the first one is returned
+	 * @returns A matching {@link GattService} object or undefined.
+	 * If multiple services match the filter, the first one is returned.
 	 * 
 	 * @throws an exception if the services cannot be resolved until the given timeout.
 	 */
-	async getService(filter: object = {}, retryOptions: RetryOptions = { maxRetries: 0, retryIntervalMs: 1000 }, servicesResolvedTimeoutMs = 10000): Promise<GattService | undefined> {
+	async getService(filter: InterfaceFilterSet<GattService> = {}, retryOptions: RetryOptions = { maxRetries: 0, retryIntervalMs: 1000 }, servicesResolvedTimeoutMs = 10000): Promise<GattService | undefined> {
 		await this.ServicesResolved.waitForValue(true, servicesResolvedTimeoutMs)
-        return this.getChildObject('GattService1', GattService.connect, filter, retryOptions)
-    }
+		return this.getChildObject('GattService1', GattService.connect, filter, retryOptions)
+	}
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal Device1
     */
 

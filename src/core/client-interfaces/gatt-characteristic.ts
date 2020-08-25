@@ -26,7 +26,7 @@ export class GattCharacteristic extends BaseInterface<GattCharacteristic1> {
 
 	ValueAsString = new ReadOnlyProperty<string>('Value', this._internal, { in: value => Buffer.from(value).toString() } )
 
-    /**
+    /*
     * Direct mappings to introspected properties, methods and signals of internal GattCharacteristic1
     */
 

@@ -3,8 +3,14 @@ import { Device1 } from "./generated/Device1";
 import { BaseInterface } from "./models/base-interface";
 import { Property, ReadOnlyProperty } from "./models/property";
 import { dict, Variant } from "../types";
-import { RetryOptions } from "../helper";
+import { RetryOptions, InterfaceFilterSet } from "../helper";
 import { GattService } from "./gatt-service";
+/**
+ * @class
+ * Remote device that has been discovered by a `Adapter`.
+ *
+ * Representation of Bluezs `Device1` interface.
+ */
 export declare class Device extends BaseInterface<Device1> {
     /**
     * Hide constructor, initialization shall be done asynchronously with connect
@@ -15,17 +21,15 @@ export declare class Device extends BaseInterface<Device1> {
      * Get a service that matches the given filter.
      *
      * @param filter filter by any given property of {@link GattService}, usally by UUID.
-     * @param retryOptions retry this operation a given number of times with the a given interval in ms.
+     * @param retryOptions retry this operation with a given number of times and interval in ms.
      * @param servicesResolvedTimeoutMs timeout for resolving the devices' services
      *
-     * @returns A matching {@link GattService} object or undefined. If multiple services match the filter, the first one is returned
+     * @returns A matching {@link GattService} object or undefined.
+     * If multiple services match the filter, the first one is returned.
      *
      * @throws an exception if the services cannot be resolved until the given timeout.
      */
-    getService(filter?: object, retryOptions?: RetryOptions, servicesResolvedTimeoutMs?: number): Promise<GattService | undefined>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal Device1
-    */
+    getService(filter?: InterfaceFilterSet<GattService>, retryOptions?: RetryOptions, servicesResolvedTimeoutMs?: number): Promise<GattService | undefined>;
     Address: ReadOnlyProperty<string>;
     AddressType: ReadOnlyProperty<string>;
     Name: ReadOnlyProperty<string>;

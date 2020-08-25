@@ -12,9 +12,6 @@ export declare class GattCharacteristic extends BaseInterface<GattCharacteristic
     writeString(text: String, options?: dict<string, Variant>): Promise<any>;
     readString(options?: dict<string, Variant>): Promise<string>;
     ValueAsString: ReadOnlyProperty<string>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal GattCharacteristic1
-    */
     UUID: ReadOnlyProperty<string>;
     Service: ReadOnlyProperty<string>;
     Value: ReadOnlyProperty<number[]>;

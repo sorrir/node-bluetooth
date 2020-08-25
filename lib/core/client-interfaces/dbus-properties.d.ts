@@ -9,9 +9,6 @@ export declare class DBusProperties extends BaseInterface<OrgfreedesktopDBusProp
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<DBusProperties>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal OrgfreedesktopDBusProperties
-    */
     get(iface: string, name: string): Promise<any>;
     set(iface: string, name: string, value: Variant): Promise<any>;
     getAll(iface: string): Promise<any>;

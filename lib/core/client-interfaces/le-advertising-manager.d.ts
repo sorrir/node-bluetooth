@@ -9,9 +9,6 @@ export declare class LEAdvertisingManager extends BaseInterface<LEAdvertisingMan
     */
     private constructor();
     static connect(bluez: Bluez, path: String): Promise<LEAdvertisingManager>;
-    /**
-    * Direct mappings to introspected properties, methods and signals of internal LEAdvertisingManager1
-    */
     ActiveInstances: ReadOnlyProperty<number>;
     SupportedInstances: ReadOnlyProperty<number>;
     SupportedIncludes: ReadOnlyProperty<string[]>;
