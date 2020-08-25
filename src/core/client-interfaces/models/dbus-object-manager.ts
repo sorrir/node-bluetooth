@@ -89,7 +89,7 @@ export class DBusObjectManager {
 
 	//@method({ name: 'GetManagedObjects', inSignature: '', outSignature: 'a{oa{sa{sv}}}' })
 	async getManagedObjects(): Promise<managedObjects> {
-		let objects = this._internal.GetManagedObjects()
+		let objects = await this._internal.GetManagedObjects()
 		let output = {}
 		for (let path of Object.keys(objects)) {
 			if (path.startsWith(this.path)) {
