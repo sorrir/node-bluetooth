@@ -10,7 +10,7 @@ export type SubType<Base, Condition> = Pick<Base, {
 export type NoFunctions<Obj> = Omit<Obj, keyof SubType<Obj, (_: any) => any | Promise<any>>>
 export type NoPrimitives<Obj> = Omit<Obj, keyof SubType<Obj, number | string | symbol | boolean>>
 export type NoPrimitivesAndFunctions<Obj> = NoPrimitives<NoFunctions<Obj>>
-export type InterfaceFilterSet<T extends BaseInterface<any>> = Record<keyof Partial<Omit<NoPrimitivesAndFunctions<T>, 'getChildObject'>>, dBusType>
+export type InterfaceFilterSet<T extends BaseInterface<any>> = Partial<Record<keyof Omit<NoPrimitivesAndFunctions<T>, 'getChildObject'>, dBusType>>
 
 export type RetryOptions = {
     maxRetries: number
