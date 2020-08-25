@@ -17,7 +17,7 @@ export declare class BaseInterface<T extends EventEmitter> {
      * Finds a specific child that matches the given filter.
      *
      * @param filter Filter, for example ```{'Name' : 'child_name'}```
-     * @return a child object if it exists. If multiple childs match the filter,
+     * @returns a child object if it exists. If multiple childs match the filter,
      * the first one is returned
      */
     getChildObject<T extends BaseInterface<any>>(interfaceName: string, constructor: _InterfaceConstructor<T>, filter?: object, options?: RetryOptions): Promise<T | undefined>;
