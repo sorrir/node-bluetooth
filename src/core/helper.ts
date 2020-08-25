@@ -1,10 +1,15 @@
 import { EventEmitter } from "events";
+import { BaseInterface } from "./client-interfaces/models/base-interface";
 
-export async function sleep(ms): Promise<unknown> {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
+// Helper types
+
+export type SubType<Base, Condition> = Pick<Base, {
+    [Key in keyof Base]: Base[Key] extends Condition ? Key : never
+}[keyof Base]>;
+export type NoFunctions<Obj> = Omit<Obj, keyof SubType<Obj, (_: any) => any | Promise<any>>>
+export type NoPrimitives<Obj> = Omit<Obj, keyof SubType<Obj, number | string | symbol | boolean>>
+export type NoPrimitivesAndFunctions<Obj> = NoPrimitives<NoFunctions<Obj>>
+export type InterfaceFilterSet<T extends BaseInterface<any>> = Partial<Omit<NoPrimitivesAndFunctions<T>, 'getChildObject'>>
 
 export type RetryOptions = {
     maxRetries: number
@@ -13,6 +18,14 @@ export type RetryOptions = {
 
 export type ReturnFunction<T> = (...args: any[]) => Promise<T>
 export type NoReturnFunction<T> = (...args: any[]) => void
+
+export async function sleep(ms: number): Promise<unknown> {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
+
+// Helper functions
 
 export async function retry<T>(options: RetryOptions, fn: ReturnFunction<T>, ...args: any[]): Promise<T> {
     return _retry(options.maxRetries, options.retryIntervalMs, fn, ...args)
@@ -42,3 +55,4 @@ export function firstResolve<T>(promises: Promise<T>[]) {
         val => Promise.resolve(val)
     );
 }
+
