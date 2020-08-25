@@ -5,9 +5,9 @@ import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict } from "
 import { Variant } from "dbus-next"
 
 export class GattManager extends BaseInterface<GattManager1> {
-     /**
-     * Hide constructor, initialization shall be done asynchronously with connect
-     */
+    /**
+    * Hide constructor, initialization shall be done asynchronously with connect
+    */
 
     private constructor(bluez: Bluez, internal: GattManager1) { super(bluez, internal) }
 
@@ -19,11 +19,9 @@ export class GattManager extends BaseInterface<GattManager1> {
     * Direct mappings to introspected properties, methods and signals of internal GattManager1
     */
 
-	//@method({ name: 'RegisterApplication', inSignature: 'oa{sv}', outSignature: '' })
-	async registerApplication(application: path, options: dict<string, Variant>) { return this._internal.RegisterApplication(application, options) }
+    //@method({ name: 'RegisterApplication', inSignature: 'oa{sv}', outSignature: '' })
+    async registerApplication(application: path, options: dict<string, Variant>) { return this._internal.RegisterApplication(application, options) }
 
-	//@method({ name: 'UnregisterApplication', inSignature: 'o', outSignature: '' })
-	async unregisterApplication(application: path) { return this._internal.UnregisterApplication(application) }
-
-
+    //@method({ name: 'UnregisterApplication', inSignature: 'o', outSignature: '' })
+    async unregisterApplication(application: path) { return this._internal.UnregisterApplication(application) }
 }

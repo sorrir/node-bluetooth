@@ -3,7 +3,7 @@ import { Adapter1 } from "./generated/Adapter1"
 import { BaseInterface } from "./models/base-interface"
 import { Signal } from "./models/signal"
 import { Property, ReadOnlyProperty } from "./models/property"
-import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant } from "../types"
+import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant, dBusType } from "../types"
 import { RetryOptions, InterfaceFilterSet } from "../helper"
 import { Device } from "./device"
 import { LEAdvertisingManager } from "./le-advertising-manager"
@@ -35,7 +35,7 @@ export class Adapter extends BaseInterface<Adapter1> {
      * @return An object of the format {'device_path' : data}.
      */
 
-	async getDevicesRaw(): Promise<{ [K in path] : any}> {
+	async getDevicesRaw(): Promise<{ [K in path]: any }> {
 		return this._bluez.getObjectData('Device1', this.path)
 	}
 
@@ -104,30 +104,52 @@ export class Adapter extends BaseInterface<Adapter1> {
 	async removeDeviceByPath(path: string) { return this._internal.RemoveDevice(path) }
 
 	/**
-	 * Get the adapters `LEAdvertisingManager`
+	 * Get the adapters `LEAdvertisingManager`.
 	 */
 
 	async getAdvertisingManager() { return LEAdvertisingManager.connect(this._bluez, this.path) }
 
 	/**
-	 * Get the adapters `GattManager`
+	 * Get the adapters `GattManager`.
 	 */
 
 	async getGattManager() { return GattManager.connect(this._bluez, this.path) }
 
 	/**
-	 * Get the adapters `Media`
+	 * Get the adapters `Media`.
 	 */
 
 	async getMedia() { return Media.connect(this._bluez, this.path) }
 
 	/**
-	 * Get the adapters `NetworkServer`
+	 * Get the adapters `NetworkServer`.
 	 */
 
 	async getNetworkServer() { return NetworkServer.connect(this._bluez, this.path) }
 
-    /*
+	/**
+	 * Get all properties.
+	 * 
+	 * @returns properties with their respective names and values.
+	 */
+
+	async getAllProperties(): Promise<{ [K in string]: dBusType }> {
+		let properties = {}
+		for (let [name, variant] of Object.entries(await this.getAllPropertiesAsVariants())) {
+			properties[name] = variant.value
+		}
+		return properties
+	}
+
+	/**
+	 * Get all properties as `Variant`s.
+	 * 
+	 * @returns properties with their respective names, values and signature.
+	 */
+
+	async getAllPropertiesAsVariants(): Promise<{ [K in string]: Variant }> { return this._internal.getProperties() }
+
+	/*
     * Direct mappings to introspected properties, methods and signals of internal Adapter1
     */
 

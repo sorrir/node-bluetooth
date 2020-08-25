@@ -3,19 +3,19 @@ import { GattCharacteristic1 } from "./generated/GattCharacteristic1"
 import { BaseInterface } from "./models/base-interface"
 import { Signal } from "./models/signal"
 import { Property, ReadOnlyProperty } from "./models/property"
-import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant } from "../types"
+import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant, dBusType } from "../types"
 
 export class GattCharacteristic extends BaseInterface<GattCharacteristic1> {
-     /**
-     * Hide constructor, initialization shall be done asynchronously with connect
-     */
+	/**
+	* Hide constructor, initialization shall be done asynchronously with connect
+	*/
 
-    private constructor(bluez: Bluez, internal: GattCharacteristic1) { super(bluez, internal) }
+	private constructor(bluez: Bluez, internal: GattCharacteristic1) { super(bluez, internal) }
 
-    static async connect(bluez: Bluez, path: String) {
-        return new GattCharacteristic(bluez, await GattCharacteristic1.Connect(bluez.bus, path))
+	static async connect(bluez: Bluez, path: String) {
+		return new GattCharacteristic(bluez, await GattCharacteristic1.Connect(bluez.bus, path))
 	}
-	
+
 	async writeString(text: String, options: dict<string, Variant> = {}) {
 		return this.writeValue(Buffer.from(text).toJSON().data, options)
 	}
@@ -24,7 +24,29 @@ export class GattCharacteristic extends BaseInterface<GattCharacteristic1> {
 		return Buffer.from(await this.Value.get()).toString()
 	}
 
-	ValueAsString = new ReadOnlyProperty<string>('Value', this._internal, { in: value => Buffer.from(value).toString() } )
+	ValueAsString = new ReadOnlyProperty<string>('Value', this._internal, { in: value => Buffer.from(value).toString() })
+
+	/**
+	 * Get all properties.
+	 * 
+	 * @returns properties with their respective names and values.
+	 */
+
+	async getAllProperties(): Promise<{ [K in string]: dBusType }> {
+		let properties = {}
+		for (let [name, variant] of Object.entries(await this.getAllPropertiesAsVariants())) {
+			properties[name] = variant.value
+		}
+		return properties
+	}
+
+	/**
+	 * Get all properties as `Variant`s.
+	 * 
+	 * @returns properties with their respective names, values and signature.
+	 */
+
+	async getAllPropertiesAsVariants(): Promise<{ [K in string]: Variant }> { return this._internal.getProperties() }
 
     /*
     * Direct mappings to introspected properties, methods and signals of internal GattCharacteristic1
@@ -68,6 +90,4 @@ export class GattCharacteristic extends BaseInterface<GattCharacteristic1> {
 
 	//@method({ name: 'StopNotify', inSignature: '', outSignature: '' })
 	async stopNotify() { return this._internal.StopNotify() }
-
-
 }

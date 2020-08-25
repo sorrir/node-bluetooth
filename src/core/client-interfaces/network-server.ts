@@ -5,9 +5,9 @@ import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict } from "
 import { Variant } from "dbus-next"
 
 export class NetworkServer extends BaseInterface<NetworkServer1> {
-     /**
-     * Hide constructor, initialization shall be done asynchronously with connect
-     */
+    /**
+    * Hide constructor, initialization shall be done asynchronously with connect
+    */
 
     private constructor(bluez: Bluez, internal: NetworkServer1) { super(bluez, internal) }
 
@@ -19,11 +19,9 @@ export class NetworkServer extends BaseInterface<NetworkServer1> {
     * Direct mappings to introspected properties, methods and signals of internal NetworkServer1
     */
 
-	//@method({ name: 'Register', inSignature: 'ss', outSignature: '' })
-	async register(uuid: String, bridge: String) { return this._internal.Register(uuid, bridge) }
+    //@method({ name: 'Register', inSignature: 'ss', outSignature: '' })
+    async register(uuid: String, bridge: String) { return this._internal.Register(uuid, bridge) }
 
-	//@method({ name: 'Unregister', inSignature: 's', outSignature: '' })
-	async unregister(uuid: String) { return this._internal.Unregister(uuid) }
-
-
+    //@method({ name: 'Unregister', inSignature: 's', outSignature: '' })
+    async unregister(uuid: String) { return this._internal.Unregister(uuid) }
 }

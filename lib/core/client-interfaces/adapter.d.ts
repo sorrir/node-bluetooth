@@ -2,7 +2,7 @@ import { Bluez } from "../bluez";
 import { Adapter1 } from "./generated/Adapter1";
 import { BaseInterface } from "./models/base-interface";
 import { Property, ReadOnlyProperty } from "./models/property";
-import { path, dict, Variant } from "../types";
+import { path, dict, Variant, dBusType } from "../types";
 import { RetryOptions, InterfaceFilterSet } from "../helper";
 import { Device } from "./device";
 import { LEAdvertisingManager } from "./le-advertising-manager";
@@ -71,21 +71,37 @@ export declare class Adapter extends BaseInterface<Adapter1> {
      */
     removeDeviceByPath(path: string): Promise<any>;
     /**
-     * Get the adapters `LEAdvertisingManager`
+     * Get the adapters `LEAdvertisingManager`.
      */
     getAdvertisingManager(): Promise<LEAdvertisingManager>;
     /**
-     * Get the adapters `GattManager`
+     * Get the adapters `GattManager`.
      */
     getGattManager(): Promise<GattManager>;
     /**
-     * Get the adapters `Media`
+     * Get the adapters `Media`.
      */
     getMedia(): Promise<Media>;
     /**
-     * Get the adapters `NetworkServer`
+     * Get the adapters `NetworkServer`.
      */
     getNetworkServer(): Promise<NetworkServer>;
+    /**
+     * Get all properties.
+     *
+     * @returns properties with their respective names and values.
+     */
+    getAllProperties(): Promise<{
+        [K in string]: dBusType;
+    }>;
+    /**
+     * Get all properties as `Variant`s.
+     *
+     * @returns properties with their respective names, values and signature.
+     */
+    getAllPropertiesAsVariants(): Promise<{
+        [K in string]: Variant;
+    }>;
     Address: ReadOnlyProperty<string>;
     AddressType: ReadOnlyProperty<string>;
     Name: ReadOnlyProperty<string>;

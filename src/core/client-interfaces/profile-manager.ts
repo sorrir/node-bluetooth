@@ -5,9 +5,9 @@ import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict } from "
 import { Variant } from "dbus-next"
 
 export class ProfileManager extends BaseInterface<ProfileManager1> {
-     /**
-     * Hide constructor, initialization shall be done asynchronously with connect
-     */
+    /**
+    * Hide constructor, initialization shall be done asynchronously with connect
+    */
 
     private constructor(bluez: Bluez, internal: ProfileManager1) { super(bluez, internal) }
 
@@ -19,11 +19,9 @@ export class ProfileManager extends BaseInterface<ProfileManager1> {
     * Direct mappings to introspected properties, methods and signals of internal ProfileManager1
     */
 
-	//@method({ name: 'RegisterProfile', inSignature: 'osa{sv}', outSignature: '' })
-	async registerProfile(profile: path, UUID: String, options: dict<string, Variant>) { return this._internal.RegisterProfile(profile, UUID, options) }
+    //@method({ name: 'RegisterProfile', inSignature: 'osa{sv}', outSignature: '' })
+    async registerProfile(profile: path, UUID: String, options: dict<string, Variant>) { return this._internal.RegisterProfile(profile, UUID, options) }
 
-	//@method({ name: 'UnregisterProfile', inSignature: 'o', outSignature: '' })
-	async unregisterProfile(profile: path) { return this._internal.UnregisterProfile(profile) }
-
-
+    //@method({ name: 'UnregisterProfile', inSignature: 'o', outSignature: '' })
+    async unregisterProfile(profile: path) { return this._internal.UnregisterProfile(profile) }
 }

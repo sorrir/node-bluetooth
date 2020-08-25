@@ -2,7 +2,7 @@ import { Bluez } from "../bluez";
 import { Device1 } from "./generated/Device1";
 import { BaseInterface } from "./models/base-interface";
 import { Property, ReadOnlyProperty } from "./models/property";
-import { dict, Variant } from "../types";
+import { dict, Variant, dBusType } from "../types";
 import { RetryOptions, InterfaceFilterSet } from "../helper";
 import { GattService } from "./gatt-service";
 /**
@@ -30,6 +30,22 @@ export declare class Device extends BaseInterface<Device1> {
      * @throws an exception if the services cannot be resolved until the given timeout.
      */
     getService(filter?: InterfaceFilterSet<GattService>, retryOptions?: RetryOptions, servicesResolvedTimeoutMs?: number): Promise<GattService | undefined>;
+    /**
+     * Get all properties.
+     *
+     * @returns properties with their respective names and values.
+     */
+    getAllProperties(): Promise<{
+        [K in string]: dBusType;
+    }>;
+    /**
+     * Get all properties as `Variant`s.
+     *
+     * @returns properties with their respective names, values and signature.
+     */
+    getAllPropertiesAsVariants(): Promise<{
+        [K in string]: Variant;
+    }>;
     Address: ReadOnlyProperty<string>;
     AddressType: ReadOnlyProperty<string>;
     Name: ReadOnlyProperty<string>;

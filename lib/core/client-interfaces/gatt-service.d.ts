@@ -2,7 +2,7 @@ import { Bluez } from "../bluez";
 import { GattService1 } from "./generated/GattService1";
 import { BaseInterface } from "./models/base-interface";
 import { ReadOnlyProperty } from "./models/property";
-import { path } from "../types";
+import { path, Variant, dBusType } from "../types";
 import { RetryOptions, InterfaceFilterSet } from "../helper";
 import { GattCharacteristic } from "./gatt-characteristic";
 export declare class GattService extends BaseInterface<GattService1> {
@@ -29,6 +29,22 @@ export declare class GattService extends BaseInterface<GattService1> {
     * If multiple services match the filter, the first one is returned.
     */
     getCharacteristic(filter?: InterfaceFilterSet<GattCharacteristic>, options?: RetryOptions): Promise<GattCharacteristic | undefined>;
+    /**
+     * Get all properties.
+     *
+     * @returns properties with their respective names and values.
+     */
+    getAllProperties(): Promise<{
+        [K in string]: dBusType;
+    }>;
+    /**
+     * Get all properties as `Variant`s.
+     *
+     * @returns properties with their respective names, values and signature.
+     */
+    getAllPropertiesAsVariants(): Promise<{
+        [K in string]: Variant;
+    }>;
     UUID: ReadOnlyProperty<string>;
     Device: ReadOnlyProperty<string>;
     Primary: ReadOnlyProperty<boolean>;

@@ -32,6 +32,4 @@ export class DBusProperties extends BaseInterface<OrgfreedesktopDBusProperties> 
 	PropertiesChanged = new Signal<{ interfaceName: string, changedProperties: dict<string, Variant>, InvalidatedProperties: Array<string> }>('PropertiesChanged', this._internal, {
 		interfaceName: null, changedProperties: null, InvalidatedProperties: null
 	})
-
-
 }
