@@ -1,1 +1,0 @@
-{"version":3,"file":"base-host-object.d.ts","sourceRoot":"","sources":["../../../../src/core/host-interfaces/models/base-host-object.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,aAAa,CAAA;AACnC,OAAO,EAAE,IAAI,EAA2B,MAAM,aAAa,CAAA;AAU3D,qBAAa,cAAc;IACvB,MAAM,CAAC,UAAU,SAAuC;IACxD,IAAI,EAAE,IAAI,CAAA;gBAEE,KAAK,EAAE,KAAK,EAAE,IAAI,EAAE,IAAI;IAkBpC,iBAAiB;CAGpB"}

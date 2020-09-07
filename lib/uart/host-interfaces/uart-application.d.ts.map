@@ -1,1 +1,0 @@
-{"version":3,"file":"uart-application.d.ts","sourceRoot":"","sources":["../../../src/uart/host-interfaces/uart-application.ts"],"names":[],"mappings":"AAOA,OAAO,EAAE,KAAK,EAAE,MAAM,kBAAkB,CAAA;AACxC,OAAO,EAAE,mBAAmB,EAAE,MAAM,kDAAkD,CAAC;AACvF,OAAO,EAAE,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAE7C,qBAAa,eAAgB,SAAQ,mBAAmB;IACpD,OAAO,EAAE,WAAW,CAAA;gBAER,KAAK,EAAE,KAAK;CAK3B"}
