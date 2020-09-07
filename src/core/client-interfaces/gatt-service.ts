@@ -9,11 +9,17 @@ import { GattCharacteristic } from "./gatt-characteristic"
 
 export class GattService extends BaseInterface<GattService1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
-
     private constructor(bluez: Bluez, internal: GattService1) { super(bluez, internal) }
 
+    /**
+	 * Connect to GATT service under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `GattService` if it exists.
+	 */
     static async connect(bluez: Bluez, path: String) {
         return new GattService(bluez, await GattService1.Connect(bluez.bus, path))
     }
@@ -23,7 +29,6 @@ export class GattService extends BaseInterface<GattService1> {
      * 
      * @returns An object of the format {'characteristic_path' : data}.
      */
-
     async getCharacteristicsRaw(): Promise<{ [K in path]: any }> {
         return this.getChildObjectsRaw('GattCharacteristic1')
     }
@@ -37,7 +42,6 @@ export class GattService extends BaseInterface<GattService1> {
 	* @returns `GattCharacteristic` object or undefined.
 	* If multiple services match the filter, the first one is returned.
 	*/
-
     async getCharacteristic(filter: InterfaceFilterSet<GattCharacteristic> = {}, options?: RetryOptions): Promise<GattCharacteristic | undefined> {
         return this.getChildObject('GattCharacteristic1', GattCharacteristic.connect, filter, options)
     }

@@ -7,11 +7,17 @@ import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant
 
 export class LEAdvertisingManager extends BaseInterface<LEAdvertisingManager1> {
      /**
-     * Hide constructor, initialization shall be done asynchronously with connect
+     * Hide constructor, initialization shall be done asynchronously with connect.
      */
-
     private constructor(bluez: Bluez, internal: LEAdvertisingManager1) { super(bluez, internal) }
 
+	/**
+	 * Connect to LE advertising manager under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `LEAdvertisingManager1` if it exists.
+	 */
     static async connect(bluez: Bluez, path: String) {
         return new LEAdvertisingManager(bluez, await LEAdvertisingManager1.Connect(bluez.bus, path))
 	}

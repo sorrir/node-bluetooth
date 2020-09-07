@@ -5,9 +5,16 @@ import { path, dict } from "../types";
 import { Variant } from "dbus-next";
 export declare class Media extends BaseInterface<Media1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
     private constructor();
+    /**
+     * Connect to media under the specified path.
+     *
+     * @param bluez `Bluez` instance.
+     * @param path path of the object.
+     * @return `Media` if it exists.
+     */
     static connect(bluez: Bluez, path: String): Promise<Media>;
     registerEndpoint(endpoint: path, properties: dict<string, Variant>): Promise<any>;
     unregisterEndpoint(endpoint: path): Promise<any>;

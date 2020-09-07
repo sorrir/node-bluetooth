@@ -5,9 +5,16 @@ import { ReadOnlyProperty } from "./models/property";
 import { byte, dict, Variant } from "../types";
 export declare class GattDescriptor extends BaseInterface<GattDescriptor1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
     private constructor();
+    /**
+     * Connect to GATT descriptor under the specified path.
+     *
+     * @param bluez `Bluez` instance.
+     * @param path path of the object.
+     * @return `GattDescriptor` if it exists.
+     */
     static connect(bluez: Bluez, path: String): Promise<GattDescriptor>;
     UUID: ReadOnlyProperty<string>;
     Characteristic: ReadOnlyProperty<string>;

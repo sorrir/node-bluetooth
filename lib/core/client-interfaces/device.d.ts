@@ -13,9 +13,16 @@ import { GattService } from "./gatt-service";
  */
 export declare class Device extends BaseInterface<Device1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
     private constructor();
+    /**
+     * Connect to device under the specified path.
+     *
+     * @param bluez `Bluez` instance.
+     * @param path path of the object.
+     * @return `Device` if it exists.
+     */
     static connect(bluez: Bluez, path: String): Promise<Device>;
     /**
      * Get a service that matches the given filter.

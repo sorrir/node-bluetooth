@@ -6,11 +6,17 @@ import { Variant } from "dbus-next"
 
 export class AgentManager extends BaseInterface<AgentManager1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
-
     private constructor(bluez: Bluez, internal: AgentManager1) { super(bluez, internal) }
 
+    /**
+	 * Connect to agent manager under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `AgentManager` if it exists.
+	 */
     static async connect(bluez: Bluez, path: String) {
         return new AgentManager(bluez, await AgentManager1.Connect(bluez.bus, path))
     }

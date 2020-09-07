@@ -7,11 +7,17 @@ import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant
 
 export class GattDescriptor extends BaseInterface<GattDescriptor1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
-
     private constructor(bluez: Bluez, internal: GattDescriptor1) { super(bluez, internal) }
 
+    /**
+	 * Connect to GATT descriptor under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `GattDescriptor` if it exists.
+	 */
     static async connect(bluez: Bluez, path: String) {
         return new GattDescriptor(bluez, await GattDescriptor1.Connect(bluez.bus, path))
     }

@@ -8,9 +8,15 @@ export class ProfileManager extends BaseInterface<ProfileManager1> {
     /**
     * Hide constructor, initialization shall be done asynchronously with connect
     */
-
     private constructor(bluez: Bluez, internal: ProfileManager1) { super(bluez, internal) }
 
+    /**
+	 * Connect to profile manager under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `ProfileManager` if it exists.
+	 */
     static async connect(bluez: Bluez, path: String) {
         return new ProfileManager(bluez, await ProfileManager1.Connect(bluez.bus, path))
     }

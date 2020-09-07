@@ -7,9 +7,16 @@ import { RetryOptions, InterfaceFilterSet } from "../helper";
 import { GattCharacteristic } from "./gatt-characteristic";
 export declare class GattService extends BaseInterface<GattService1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
     private constructor();
+    /**
+     * Connect to GATT service under the specified path.
+     *
+     * @param bluez `Bluez` instance.
+     * @param path path of the object.
+     * @return `GattService` if it exists.
+     */
     static connect(bluez: Bluez, path: String): Promise<GattService>;
     /**
      * Get information about all characteristics.

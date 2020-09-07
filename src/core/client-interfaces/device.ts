@@ -16,11 +16,17 @@ import { GattService } from "./gatt-service"
 
 export class Device extends BaseInterface<Device1> {
 	/**
-	* Hide constructor, initialization shall be done asynchronously with connect
+	* Hide constructor, initialization shall be done asynchronously with connect.
 	*/
-
 	private constructor(bluez: Bluez, internal: Device1) { super(bluez, internal) }
 
+	/**
+	 * Connect to device under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `Device` if it exists.
+	 */
 	static async connect(bluez: Bluez, path: String) {
 		return new Device(bluez, await Device1.Connect(bluez.bus, path))
 	}

@@ -7,19 +7,36 @@ import { int16, uint16, int32, uint32, byte, path, fileDescriptor, dict, Variant
 
 export class GattCharacteristic extends BaseInterface<GattCharacteristic1> {
 	/**
-	* Hide constructor, initialization shall be done asynchronously with connect
+	* Hide constructor, initialization shall be done asynchronously with connect.
 	*/
-
 	private constructor(bluez: Bluez, internal: GattCharacteristic1) { super(bluez, internal) }
 
+	/**
+	 * Connect to GATT characteristic under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `GattCharacteristic` if it exists.
+	 */
 	static async connect(bluez: Bluez, path: String) {
 		return new GattCharacteristic(bluez, await GattCharacteristic1.Connect(bluez.bus, path))
 	}
 
+	/**
+	 * Write a string to the characteristic.
+	 * 
+	 * @param text text to write.
+	 * @param options options for writing the text.
+	 */
 	async writeString(text: String, options: dict<string, Variant> = {}) {
 		return this.writeValue(Buffer.from(text).toJSON().data, options)
 	}
 
+	/**
+	 * Read a string from the characteristic.
+	 * 
+	 * @param options currently not used
+	 */
 	async readString(options: dict<string, Variant> = {}) {
 		return Buffer.from(await this.Value.get()).toString()
 	}

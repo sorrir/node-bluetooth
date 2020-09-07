@@ -6,11 +6,17 @@ import { Variant } from "dbus-next"
 
 export class Media extends BaseInterface<Media1> {
 	/**
-	* Hide constructor, initialization shall be done asynchronously with connect
+	* Hide constructor, initialization shall be done asynchronously with connect.
 	*/
-
 	private constructor(bluez: Bluez, internal: Media1) { super(bluez, internal) }
 
+	/**
+	 * Connect to media under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `Media` if it exists.
+	 */
 	static async connect(bluez: Bluez, path: String) {
 		return new Media(bluez, await Media1.Connect(bluez.bus, path))
 	}

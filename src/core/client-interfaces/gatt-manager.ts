@@ -6,11 +6,17 @@ import { Variant } from "dbus-next"
 
 export class GattManager extends BaseInterface<GattManager1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
-
     private constructor(bluez: Bluez, internal: GattManager1) { super(bluez, internal) }
 
+    /**
+	 * Connect to GATT manager under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `GattManager` if it exists.
+	 */
     static async connect(bluez: Bluez, path: String) {
         return new GattManager(bluez, await GattManager1.Connect(bluez.bus, path))
     }
