@@ -10,6 +10,7 @@ import { LEAdvertisingManager } from "./le-advertising-manager"
 import { GattManager } from "./gatt-manager"
 import { Media } from "./media"
 import { NetworkServer } from "./network-server"
+import { Exception } from "handlebars"
 
 /**
  * @class
@@ -20,13 +21,32 @@ import { NetworkServer } from "./network-server"
 
 export class Adapter extends BaseInterface<Adapter1> {
 	/**
-	* Hide constructor, initialization shall be done asynchronously with connect
+	* Hide constructor, initialization shall be done asynchronously with connect.
 	*/
-
 	private constructor(bluez: Bluez, internal: Adapter1) { super(bluez, internal) }
 
+	/**
+	 * Connect to adapter under the specified path.
+	 * 
+	 * @param bluez `Bluez` instance. 
+	 * @param path path of the object.
+	 * @return `Adapter` if it exists.
+	 */
 	static async connect(bluez: Bluez, path: String = "/org/bluez/hci0") {
 		return new Adapter(bluez, await Adapter1.Connect(bluez.bus, path))
+	}
+
+	/**
+	 * Connect to the default adapter.
+	 * 
+	 * @param bluez `Bluez` instance.
+	 */
+	static async connectDefault(bluez: Bluez) {
+		let adapterPaths = Object.keys(await bluez.getObjectData('Adapter1', '/org/bluez'))
+		if(adapterPaths.length === 0) {
+			throw new Exception("Could not connect to default adapter: No adapter found")
+		}
+		return Adapter.connect(bluez, adapterPaths[0])
 	}
 
 	/**

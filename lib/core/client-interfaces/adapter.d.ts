@@ -17,10 +17,23 @@ import { NetworkServer } from "./network-server";
  */
 export declare class Adapter extends BaseInterface<Adapter1> {
     /**
-    * Hide constructor, initialization shall be done asynchronously with connect
+    * Hide constructor, initialization shall be done asynchronously with connect.
     */
     private constructor();
+    /**
+     * Connect to adapter under the specified path.
+     *
+     * @param bluez `Bluez` instance.
+     * @param path path of the object.
+     * @return `Adapter` if it exists.
+     */
     static connect(bluez: Bluez, path?: String): Promise<Adapter>;
+    /**
+     * Connect to the default adapter.
+     *
+     * @param bluez `Bluez` instance.
+     */
+    static connectDefault(bluez: Bluez): Promise<Adapter>;
     /**
      * Get information about all discovered devices.
      *
