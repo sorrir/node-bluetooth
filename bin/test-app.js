@@ -29,7 +29,7 @@ async function main() {
             await server.stop()
         }
     } else {
-        console.log(`role: client`)
+        console.log(`role: client\ttarget: ${argv.target || DEFAULT_SERVER_NAME}`)
         const client = new UartBluetoothClient(argv.target || DEFAULT_SERVER_NAME)
         client.handleMessage = (message, sender) => {
             console.log('----------------')

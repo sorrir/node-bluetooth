@@ -26,12 +26,19 @@ export class UartBluetoothClient {
 		this.address = await adapter.Address.get()
 		await adapter.Powered.set(true)
 
+		// reset discovery filters
+		await adapter.setDiscoveryFilter({})
+
 		await adapter.startDiscovery()
         await adapter.Discovering.waitForValue(true)
 		await adapter.setDiscoveryFilter({ 'Transport': new Variant('s', 'le') })
 
-		let device = await adapter.getDeviceByName(this.target)
+		let device = await adapter.getDeviceByName(this.target, {maxRetries: 10, retryIntervalMs: 1000})
 		console.log('connecting to server...')
+		if (device === undefined) {
+			console.error("Could not find target device");
+			return;
+		}
 		await device.connect()
 		await device.Connected.waitForValue(true)
         console.log('successfully connected')
@@ -45,7 +52,7 @@ export class UartBluetoothClient {
         await this._rxCharacteristic.startNotify()
         this.isStarted = true
         const obj = this
-        await this._rxCharacteristic.ValueAsString.addListener(async (text) => {
+        this._rxCharacteristic.ValueAsString.addListener(async (text) => {
 			try {
 				const json = JSON.parse(text)
 				obj.handleMessage(json['msg'], json['sender'])
