@@ -10,8 +10,13 @@
     "build-babel": "babel src -d lib --extensions \".ts,.js\"",
     "build-types": "tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false",
     "build": "babel src -d lib --extensions \".ts,.js\" && tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false",
-    "build-watch": "babel src -d lib --extensions \".ts,.js\" --watch & tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false -w && kill $!"
+    "build-watch": "babel src -d lib --extensions \".ts,.js\" --watch & tsc --declaration --emitDeclarationOnly --declarationMap --allowJs false --checkJs false -w && kill $!",
+    "lint-test": "eslint . --ext .ts",
+    "lint-fix": "eslint . --ext .ts --fix"
   },
+  "pre-commit": [
+    "lint-fix"
+  ],
   "babel": {
     "presets": [
       "@babel/preset-env"
@@ -58,7 +63,15 @@
     "@babel/plugin-transform-runtime": "^7.10.3",
     "@babel/plugin-transform-typescript": "^7.10.4",
     "@babel/preset-env": "^7.10.3",
-    "@types/node": "^14.0.23"
+    "@types/node": "^14.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint": "^7.8.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.1.1",
+    "typescript": "^3.9.7"
   },
   "repository": {
     "type": "git",

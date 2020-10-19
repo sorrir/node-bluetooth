@@ -1,2 +1,2 @@
-export * from './core/index'
-export * from './uart/index'
+export * from "./core/index";
+export * from "./uart/index";

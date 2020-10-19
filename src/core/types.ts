@@ -1,4 +1,4 @@
-import * as dbus from 'dbus-next'
+import * as dbus from "dbus-next";
 
 //TODO: find a better solution for this workaround
 //The constructor of Variant is not correctly declared
@@ -9,42 +9,71 @@ import * as dbus from 'dbus-next'
 //in some functions of dbus. This therefore the prototype
 // of the constructor is overriden before the export
 class Variant extends dbus.Variant<dBusType> {
-    constructor(signature: string, value: dBusType) {
-        super()
-        this.signature = signature
-        this.value = value
-    }
+  constructor(signature: string, value: dBusType) {
+    super();
+    this.signature = signature;
+    this.value = value;
+  }
 }
-Variant.prototype.constructor = dbus.Variant
-export { Variant }
+Variant.prototype.constructor = dbus.Variant;
+export { Variant };
 
 export class DBusSignatures {
-    static boolean = 'b'
-    static int16 = 'n'
-    static uint16 = 'q'
-    static int32 = 'i'
-    static uint32 = 'u'
-    static byte = 'y'
-    static path = 'o'
-    static string = 's'
-    static Variant = 'v'
-    static fileDescriptor = 'h'
-    static Array = 'a'
-    static dict = 'a{'
-    static getSignature(type: string): String { return DBusSignatures[type] }
-    static getType(signature: string): String { return Object.entries(DBusSignatures).find(([_, val]) => val === signature)[0] }
-    static getImportableTypes() { return ['int16', 'uint16', 'int32', 'uint32', 'byte', 'path', 'fileDescriptor', 'dict'] }
+  static boolean = "b";
+  static int16 = "n";
+  static uint16 = "q";
+  static int32 = "i";
+  static uint32 = "u";
+  static byte = "y";
+  static path = "o";
+  static string = "s";
+  static Variant = "v";
+  static fileDescriptor = "h";
+  static Array = "a";
+  static dict = "a{";
+  static getSignature(type: string): string {
+    return DBusSignatures[type];
+  }
+  static getType(signature: string): string {
+    return Object.entries(DBusSignatures).find(
+      ([_, val]) => val === signature
+    )[0];
+  }
+  static getImportableTypes() {
+    return [
+      "int16",
+      "uint16",
+      "int32",
+      "uint32",
+      "byte",
+      "path",
+      "fileDescriptor",
+      "dict",
+    ];
+  }
 }
 
-export type int16 = number
-export type uint16 = number
-export type int32 = number
-export type uint32 = number
-export type byte = number
-export type path = string
-export type fileDescriptor = string
+export type int16 = number;
+export type uint16 = number;
+export type int32 = number;
+export type uint32 = number;
+export type byte = number;
+export type path = string;
+export type fileDescriptor = string;
 export type dict<K extends string | number, V extends dBusType> = {
-    [P in K]: V
-}
+  [P in K]: V;
+};
 
-export type dBusType = boolean | int16 | uint16 | int32 | uint32 | byte | path | string | Variant | fileDescriptor | Array<any> | dict<any, any>
+export type dBusType =
+  | boolean
+  | int16
+  | uint16
+  | int32
+  | uint32
+  | byte
+  | path
+  | string
+  | Variant
+  | fileDescriptor
+  | Array<any>
+  | dict<any, any>;

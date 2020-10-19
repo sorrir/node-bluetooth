@@ -1,4 +1,4 @@
-export * from './uart-bluetooth-client'
-export * from './uart-bluetooth-server'
+export * from "./uart-bluetooth-client";
+export * from "./uart-bluetooth-server";
 
-export * from './host-interfaces/index'
+export * from "./host-interfaces/index";
