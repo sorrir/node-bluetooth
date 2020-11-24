@@ -30,7 +30,6 @@ export class BaseHostObject {
         const someMethodReply = Message.newMethodReturn(msg, "a{oa{sa{sv}}}", [
           _this.GetManagedObjects(),
         ]);
-        console.log(`${this.path}:GetManagedObjects`);
         bluez.bus.send(someMethodReply);
         return true;
       }

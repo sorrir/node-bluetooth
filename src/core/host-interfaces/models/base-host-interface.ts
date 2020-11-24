@@ -114,7 +114,6 @@ export class BaseHostInterface extends dbus.interface.Interface {
       msg.member === name
     ) {
       try {
-        console.log(`${this.path}:${name}`);
         const variant = this[name](...args);
         if (variant !== undefined) {
           const reply = Message.newMethodReturn(msg, variant.signature, [
