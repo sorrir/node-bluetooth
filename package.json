@@ -1,6 +1,6 @@
 {
   "name": "@sorrir/bluetooth",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "A BLE library for both central modules and peripherals - built upon bluez, the official Linux Bluetooth protocol stack.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
