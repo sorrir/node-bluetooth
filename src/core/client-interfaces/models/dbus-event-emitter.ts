@@ -13,7 +13,7 @@ type eventKeys<T> = (keyof T)[];
 
 export class GenericDBusEventEmitter<
   InputEvent extends dict<string, dBusType>,
-  OutputEvent extends any
+  OutputEvent
 > {
   readonly eventName: string;
   private readonly _eventEmitter: EventEmitter;

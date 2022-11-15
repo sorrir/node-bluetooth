@@ -64,7 +64,7 @@ export class DBusProperties {
     interfaceName: string;
     changedProperties: dict<string, Variant>;
     InvalidatedProperties: Array<string>;
-  }>("PropertiesChanged", this._internal, {
+  }>("PropertiesChanged", (<any>this)._internal, {
     interfaceName: null,
     changedProperties: null,
     InvalidatedProperties: null,
