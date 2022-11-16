@@ -52,7 +52,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/runtime": "^7.20.1",
-    "dbus-next": "^0.10.2",
+    "@quadratclown/dbus-next": "1.0.1",
     "handlebars": "^4.7.7"
   },
   "devDependencies": {

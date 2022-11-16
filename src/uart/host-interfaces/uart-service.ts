@@ -1,4 +1,4 @@
-import * as dbus from "dbus-next";
+import * as dbus from "@quadratclown/dbus-next";
 
 import { uint16 } from "../../core/types";
 

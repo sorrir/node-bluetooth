@@ -12,7 +12,7 @@ import {
   dict,
   dBusType,
 } from "../types";
-import { Variant } from "dbus-next";
+import { Variant } from "@quadratclown/dbus-next";
 
 export class Media extends BaseInterface<Media1> {
   /**

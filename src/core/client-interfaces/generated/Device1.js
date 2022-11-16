@@ -1,4 +1,4 @@
-const DBus = require('dbus-next');
+const DBus = require('@quadratclown/dbus-next');
 const { EventEmitter } = require('events');
 
 /*

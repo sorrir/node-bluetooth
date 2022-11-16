@@ -1,4 +1,4 @@
-import * as dbus from "dbus-next";
+import * as dbus from "@quadratclown/dbus-next";
 
 //TODO: find a better solution for this workaround
 //The constructor of Variant is not correctly declared

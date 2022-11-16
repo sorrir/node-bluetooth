@@ -1,5 +1,5 @@
-import { MessageBus } from "dbus-next/lib/bus";
-import * as dbus from "dbus-next";
+import { MessageBus } from "@quadratclown/dbus-next/lib/bus";
+import * as dbus from "@quadratclown/dbus-next";
 import { DBusObjectManager } from "./client-interfaces/models/dbus-object-manager";
 import { BaseHostInterface } from "./host-interfaces/models/base-host-interface";
 import { DBusObject } from "./client-interfaces/models/dbus-object";

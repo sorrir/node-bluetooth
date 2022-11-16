@@ -1,7 +1,7 @@
 import { Bluez } from "../../bluez";
 import { path, dBusType, dict, Variant } from "../../types";
-import { ProxyObject, ClientInterface, Message } from "dbus-next";
-import * as dbus from "dbus-next";
+import { ProxyObject, ClientInterface, Message } from "@quadratclown/dbus-next";
+import * as dbus from "@quadratclown/dbus-next";
 import { Exception } from "handlebars";
 
 const {

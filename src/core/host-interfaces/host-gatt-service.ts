@@ -1,4 +1,4 @@
-import * as dbus from "dbus-next";
+import * as dbus from "@quadratclown/dbus-next";
 
 const Message = dbus.Message;
 import { dict, path, Variant, uint16 } from "../types";

@@ -1,4 +1,4 @@
-import * as dbus from "dbus-next";
+import * as dbus from "@quadratclown/dbus-next";
 const Message = dbus.Message;
 const {
   Interface,

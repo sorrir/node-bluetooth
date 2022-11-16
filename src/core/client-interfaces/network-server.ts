@@ -11,7 +11,7 @@ import {
   fileDescriptor,
   dict,
 } from "../types";
-import { Variant } from "dbus-next";
+import { Variant } from "@quadratclown/dbus-next";
 
 export class NetworkServer extends BaseInterface<NetworkServer1> {
   /**
