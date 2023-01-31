@@ -1,3 +1,5 @@
+## `@sorrir/bluetooth` is no longer maintained. Development continues as `blauzahn` (see [github](https://github.com/QuadratClown/blauzahn) and [npm](https://www.npmjs.com/package/blauzahn))
+
 # @sorrir/bluetooth
 
 `@sorrir/bluetooth` is a BLE library built upon `bluez`, the official Linux Bluetooth protocol stack. It offers several layers of abstraction, allowing both implementing a central module as well as a custom peripheral.
